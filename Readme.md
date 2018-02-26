@@ -2,7 +2,7 @@
 
 ##### Context menu tools for launching elevated Command Prompt, PowerShell, PowerShell IDE, and more.
 
-#### At a Glance: ####
+#### At a Glance:
 - Run as Administrator for third-party scripting tools
 - Run as Another User
 - Prompt Here as System for CMD and Windows PowerShell
@@ -19,7 +19,13 @@ New Elevation PowerToys for Windows Vista, TechNet Magazine, June 2008
 - [Using Elevation PowerToys](#using-elevation-powertoys)
 - [Licenses](#licenses)
 - [Changelog](#changelog)
+- [Credits](#credits)
 
 ### Using Elevation PowerToys
 
 Coming soon...
+
+- - -
+
+Created by Michael Murgolo (Senior Infrastructure Consultant for Microsoft Consulting Services)  
+Based on work done by John Stephens (Microsoft Software Design Engineer)
