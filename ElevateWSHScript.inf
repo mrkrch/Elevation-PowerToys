@@ -1,0 +1,125 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; //
+; // "Elevate WSH Script" PowerToy for Windows Vista
+; //
+; // File:      ElevateWSHScript.inf
+; //
+; // Additional files required:  Elevate.cmd, Elevate.vbs
+; //
+; // Purpose:   To add a Run as Administrator entry and a Run as Administrator 
+; //            with Command Prompt entry to the Explorer context menu for
+; //            Windows Script Host scripts
+; //
+; // Version:   1.0.1
+; // Date :     01/15/2007
+; //
+; // History:
+; // 1.0.0   01/02/2007  Created initial version.
+; // 1.0.1   01/15/2007  Changed script installation folder name.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+signature="$CHICAGO$"
+
+[ElevateWSHScriptInstall]
+CopyFiles = ElevateWSHScript.Files.Inf
+CopyFiles = ElevateWSHScript.Files.ProgramFiles
+AddReg    = ElevateWSHScript.AddReg
+
+[DefaultInstall]
+CopyFiles = ElevateWSHScript.Files.Inf
+CopyFiles = ElevateWSHScript.Files.ProgramFiles
+AddReg    = ElevateWSHScript.AddReg
+
+[DefaultUnInstall]
+DelFiles = ElevateWSHScript.Files.Inf
+DelFiles = ElevateWSHScript.Files.ProgramFiles
+DelReg   = ElevateWSHScript.DelReg
+AddReg   = ElevateWSHScript.Once.UnInst.Reg
+
+[SourceDisksNames]
+55="Elevate WSH Script","",1
+
+[SourceDisksFiles]
+ElevateWSHScript.INF=55
+Elevate.cmd=55
+Elevate.vbs=55
+
+[DestinationDirs]
+ElevateWSHScript.Files.Inf = 17
+ElevateWSHScript.Files.ProgramFiles = 24,Program Files\Elevate WSH Script PowerToy
+
+[ElevateWSHScript.Files.Inf]
+ElevateWSHScript.INF
+
+[ElevateWSHScript.Files.ProgramFiles]
+Elevate.cmd
+Elevate.vbs
+
+[ElevateWSHScript.Once.UnInst.Reg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup,ElevateWSHScript,,"%11%\cmd.exe /c rd ""%24%\Program Files\Elevate WSH Script PowerToy"""
+
+[ElevateWSHScript.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%ElevateWSHScriptName%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateWSHScript.inf"
+
+;VBScript Files (.vbs)
+HKCR,VBSFile\shell\runas,,,"%ElevateWSHScriptAccel%"
+HKCR,VBSFile\shell\runas\command,,,"""%11%\Wscript.exe"" ""%L"""
+HKCR,VBSFile\shell\runas With Cscript,,,"%ElevateWSHScriptAccelCscript%"
+HKCR,VBSFile\shell\runas With Cscript\command,,,"""%24%\Program Files\Elevate WSH Script PowerToy\Elevate.cmd"" ""%11%\Cscript.exe"" ""%L"""
+
+;Encoded VBScript Files (.vbe)
+HKCR,VBEFile\shell\runas,,,"%ElevateWSHScriptAccel%"
+HKCR,VBEFile\shell\runas\command,,,"""%11%\Wscript.exe"" ""%L"""
+HKCR,VBEFile\shell\runas With Cscript,,,"%ElevateWSHScriptAccelCscript%"
+HKCR,VBEFile\shell\runas With Cscript\command,,,"""%24%\Program Files\Elevate WSH Script PowerToy\Elevate.cmd"" ""%11%\Cscript.exe"" ""%L"""
+
+;JavaScript Files (.js)
+HKCR,JSFile\shell\runas,,,"%ElevateWSHScriptAccel%"
+HKCR,JSFile\shell\runas\command,,,"""%11%\Wscript.exe"" ""%L"""
+HKCR,JSFile\shell\runas With Cscript,,,"%ElevateWSHScriptAccelCscript%"
+HKCR,JSFile\shell\runas With Cscript\command,,,"""%24%\Program Files\Elevate WSH Script PowerToy\Elevate.cmd"" ""%11%\Cscript.exe"" ""%L"""
+
+;JavaScript Files (.jse)
+HKCR,JSEFile\shell\runas,,,"%ElevateWSHScriptAccel%"
+HKCR,JSEFile\shell\runas\command,,,"""%11%\Wscript.exe"" ""%L"""
+HKCR,JSEFile\shell\runas With Cscript,,,"%ElevateWSHScriptAccelCscript%"
+HKCR,JSEFile\shell\runas With Cscript\command,,,"""%24%\Program Files\Elevate WSH Script PowerToy\Elevate.cmd"" ""%11%\Cscript.exe"" ""%L"""
+
+;Windows Script Host Files (.wsf)
+HKCR,WSFFile\shell\runas,,,"%ElevateWSHScriptAccel%"
+HKCR,WSFFile\shell\runas\command,,,"""%11%\Wscript.exe"" ""%L"""
+HKCR,WSFFile\shell\runas With Cscript,,,"%ElevateWSHScriptAccelCscript%"
+HKCR,WSFFile\shell\runas With Cscript\command,,,"""%24%\Program Files\Elevate WSH Script PowerToy\Elevate.cmd"" ""%11%\Cscript.exe"" ""%L"""
+
+;Windows Script Host Files (.wsh)
+HKCR,WSHFile\shell\runas,,,"%ElevateWSHScriptAccel%"
+HKCR,WSHFile\shell\runas\command,,,"""%11%\Wscript.exe"" ""%L"""
+HKCR,WSHFile\shell\runas With Cscript,,,"%ElevateWSHScriptAccelCscript%"
+HKCR,WSHFile\shell\runas With Cscript\command,,,"""%24%\Program Files\Elevate WSH Script PowerToy\Elevate.cmd"" ""%11%\Cscript.exe"" ""%L"""
+
+[ElevateWSHScript.DelReg]
+HKLM,%UDHERE%
+HKCR,VBSFile\shell\runas
+HKCR,VBSFile\shell\runas With Cscript
+HKCR,VBEFile\shell\runas
+HKCR,VBEFile\shell\runas With Cscript
+HKCR,JSFile\shell\runas
+HKCR,JSFile\shell\runas With Cscript
+HKCR,JSEFile\shell\runas
+HKCR,JSEFile\shell\runas With Cscript
+HKCR,WSFFile\shell\runas
+HKCR,WSFFile\shell\runas With Cscript
+HKCR,WSHFile\shell\runas
+HKCR,WSHFile\shell\runas With Cscript
+
+[Strings]
+ElevateWSHScriptName="Elevate WSH Script PowerToy for Windows Vista (Uninstall only)"
+ElevateWSHScriptAccel="Run as Administrator"
+ElevateWSHScriptAccelCscript="Run as Administrator with Command Prompt"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateWSHScript"

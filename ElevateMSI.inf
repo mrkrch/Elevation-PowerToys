@@ -1,0 +1,70 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; //
+; // "Elevate Windows Installer Package" PowerToy for Windows Vista
+; //
+; // File:      ElevateMSI.inf
+; //
+; // Purpose:   To add an "Install as Administrator" entry to the Explorer context 
+; //            menu for Windows Installer packages (.msi) and "Apply Patch as
+; //            Administrator" for Windows Installer patches (.msp)
+; //
+; // Version:   1.0.0
+; // Date :     03/01/2007
+; //
+; // History:
+; // 1.0.0   03/01/2007  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+signature="$CHICAGO$"
+
+[ElevateMSIInstall]
+CopyFiles = ElevateMSI.Files.Inf
+AddReg    = ElevateMSI.AddReg
+
+[DefaultInstall]
+CopyFiles = ElevateMSI.Files.Inf
+AddReg    = ElevateMSI.AddReg
+
+[DefaultUnInstall]
+DelFiles = ElevateMSI.Files.Inf
+DelReg   = ElevateMSI.DelReg
+
+[SourceDisksNames]
+55="Elevate HTA","",1
+
+[SourceDisksFiles]
+ElevateMSI.INF=55
+
+[DestinationDirs]
+ElevateMSI.Files.Inf = 17
+
+[ElevateMSI.Files.Inf]
+ElevateMSI.INF
+
+[ElevateMSI.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%ElevateMSIName%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateMSI.inf"
+
+HKCR,Msi.Package\shell\runas
+HKCR,Msi.Package\shell\runas,,,"%ElevateMSIAccel%"
+HKCR,Msi.Package\shell\runas\command,,,"""%11%\msiexec.exe"" /i ""%1"" %*"
+
+HKCR,Msi.Patch\shell\runas
+HKCR,Msi.Patch\shell\runas,,,"%ElevateMSPAccel%"
+HKCR,Msi.Patch\shell\runas\command,,,"""%11%\msiexec.exe"" /p ""%1"" %*"
+
+[ElevateMSI.DelReg]
+HKLM,%UDHERE%
+HKCR,Msi.Package\shell\runas
+HKCR,Msi.Patch\shell\runas
+
+[Strings]
+ElevateMSIName="Elevate Windows Installer Package PowerToy for Windows Vista (Uninstall only)"
+ElevateMSIAccel="Install as Administrator"
+ElevateMSPAccel="Apply Patch as Administrator"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateMSI"

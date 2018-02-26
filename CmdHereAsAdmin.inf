@@ -1,0 +1,65 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; //
+; // "CMD Prompt Here as Administrator" PowerToy for Windows Vista
+; //
+; // File:      CmdHereAsAdmin.inf
+; //
+; // Purpose:   To add a "CMD Prompt Here as Administrator" entry to the 
+; //            Explorer context menu for Windows Vista
+; //
+; // Version:   1.0.1
+; // Date :     01/18/2007
+; //
+; // History:
+; // 1.0.0   01/15/2006  Created initial version.
+; // 1.0.1   01/18/2007  Add /d switch to cd command.  Added header.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+[version]
+signature="$CHICAGO$"
+
+[CmdHereAsAdminInstall]
+CopyFiles = CmdHereAsAdmin.Files.Inf
+AddReg    = CmdHereAsAdmin.AddReg
+
+[DefaultInstall]
+CopyFiles = CmdHereAsAdmin.Files.Inf
+AddReg    = CmdHereAsAdmin.AddReg
+
+[DefaultUnInstall]
+DelFiles  = CmdHereAsAdmin.Files.Inf
+DelReg    = CmdHereAsAdmin.DelReg
+
+[SourceDisksNames]
+55="CMD Prompt Here as Administrator","",1
+
+[SourceDisksFiles]
+CmdHereAsAdmin.INF=55
+
+[DestinationDirs]
+CmdHereAsAdmin.Files.Inf = 17
+
+[CmdHereAsAdmin.Files.Inf]
+CmdHereAsAdmin.INF
+
+[CmdHereAsAdmin.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%CmdHereAsAdminName%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\CmdHereAsAdmin.inf"
+HKCR,Directory\Shell\runas,,,"%CmdHereAsAdminAccel%"
+HKCR,Directory\Shell\runas\command,,,"%11%\cmd.exe /k cd /d ""%1"""
+HKCR,Drive\Shell\runas,,,"%CmdHereAsAdminAccel%"
+HKCR,Drive\Shell\runas\command,,,"%11%\cmd.exe /k cd /d ""%1"""
+
+[CmdHereAsAdmin.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\runas
+HKCR,Drive\Shell\runas
+
+
+[Strings]
+CmdHereAsAdminName="CMD Prompt Here as Administrator PowerToy (Uninstall only)"
+CmdHereAsAdminAccel="CMD Prompt Here as Administrator"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\CmdHereAsAdmin"

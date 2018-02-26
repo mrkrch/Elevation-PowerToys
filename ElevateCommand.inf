@@ -1,0 +1,70 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; //
+; // "Elevate Command" PowerToy for Windows Vista
+; //
+; // File:      ElevateCommand.inf
+; //
+; // Additional files required:  Elevate.cmd, Elevate.vbs
+; //
+; // Purpose:   To add a command line method of launching applications that
+; //            prompt for elevation (run as Administrator) to Windows
+; //            Vista.
+; //
+; // Version:   1.0.0
+; // Date :     01/02/2007
+; //
+; // History:
+; // 1.0.0   01/02/2007  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+signature="$CHICAGO$"
+
+[ElevateCommandInstall]
+CopyFiles = ElevateCommand.Files.Inf
+CopyFiles = ElevateCommand.Files.System
+AddReg    = ElevateCommand.AddReg
+
+[DefaultInstall]
+CopyFiles = ElevateCommand.Files.Inf
+CopyFiles = ElevateCommand.Files.System
+AddReg    = ElevateCommand.AddReg
+
+[DefaultUnInstall]
+DelFiles = ElevateCommand.Files.Inf
+DelFiles = ElevateCommand.Files.System
+DelReg   = ElevateCommand.DelReg
+
+[SourceDisksNames]
+55="Elevate WSH Script","",1
+
+[SourceDisksFiles]
+ElevateCommand.INF=55
+Elevate.cmd=55
+Elevate.vbs=55
+
+[DestinationDirs]
+ElevateCommand.Files.Inf = 17
+ElevateCommand.Files.System = 11
+
+[ElevateCommand.Files.Inf]
+ElevateCommand.INF
+
+[ElevateCommand.Files.System]
+Elevate.cmd
+Elevate.vbs
+
+[ElevateCommand.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%ElevateCommandName%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateCommand.inf"
+
+[ElevateCommand.DelReg]
+HKLM,%UDHERE%
+
+[Strings]
+ElevateCommandName="Elevate Command PowerToy for Windows Vista (Uninstall only)"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateCommand"

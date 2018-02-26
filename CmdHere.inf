@@ -1,0 +1,68 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; //
+; // "CMD Prompt Here" PowerToy (with fixed uninstall)
+; //
+; // File:      CmdHere.inf
+; //
+; // Purpose:   To add a CMD Prompt Here entry to the Explorer context menu
+; //
+; // Version:   1.0.2
+; // Date :     02/19/2007
+; //
+; // History:
+; // 1.0.0   11/20/2006  Modified Windows Resource Kit version to fix the
+; //                     uninstall.
+; // 1.0.1   01/18/2007  Add /d switch to cd command.  Added header.
+; // 1.0.2   02/19/2007  Changed Registry Key name so that the command appears
+; //                     next to the "CMD Prompt Here as Administrator"
+; //                     PowerToy context menu entry.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+[version]
+signature="$CHICAGO$"
+
+[CmdHereInstall]
+CopyFiles = CmdHere.Files.Inf
+AddReg    = CmdHere.AddReg
+
+[DefaultInstall]
+CopyFiles = CmdHere.Files.Inf
+AddReg    = CmdHere.AddReg
+
+[DefaultUnInstall]
+DelFiles  = CmdHere.Files.Inf
+DelReg    = CmdHere.DelReg
+
+[SourceDisksNames]
+55="CMD Prompt Here","",1
+
+[SourceDisksFiles]
+CmdHere.INF=55
+
+[DestinationDirs]
+CmdHere.Files.Inf = 17
+
+[CmdHere.Files.Inf]
+CmdHere.INF
+
+[CmdHere.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%CmdHereName%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\CmdHere.inf"
+HKCR,Directory\Shell\rCmdHere,,,"%CmdHereAccel%"
+HKCR,Directory\Shell\rCmdHere\command,,,"%11%\cmd.exe /k cd /d ""%1"""
+HKCR,Drive\Shell\rCmdHere,,,"%CmdHereAccel%"
+HKCR,Drive\Shell\rCmdHere\command,,,"%11%\cmd.exe /k cd /d ""%1"""
+
+[CmdHere.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\rCmdHere
+HKCR,Drive\Shell\rCmdHere
+
+
+[Strings]
+CmdHereName="CMD Prompt Here PowerToy (Uninstall only)"
+CmdHereAccel="CMD &Prompt Here"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\CmdHere"
