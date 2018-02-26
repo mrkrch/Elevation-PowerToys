@@ -1,0 +1,111 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
+; //***************************************************************************
+; // ***** Script Header *****
+; // ===================================
+; // Script PowerToys for Windows 64-bit
+; // ===================================
+; //
+; // "Explore as Administrator 32-bit" PowerToy for Windows
+; //
+; // File:      ExploreAsAdmin32bit.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
+; // Purpose:   To add an "Explore as Administrator 32-git" entry to the
+; //            Explorer context menu on Windows 64-bit (Vista and higher)
+; //
+; // Additional requirements:  
+; //            - "Elevate Command" PowerToy must be installed.
+; //            - This version of the INF file is configured to use Explorer++
+; //              32- bit(download from http://explorerplusplus.com/) as the
+; //              file manager program to elevate.  To use another one, replace
+; //              both instances of the following path with the path to the 
+; //              desired executable:
+; //                  %ProgramFiles(x86)%\Explorer++\Explorer++.exe
+; //
+; // Version:   1.0.0
+; //
+; // History:
+; // 1.0.0   05/07/2010  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+[version]
+Signature="$Windows NT$"
+
+[ExploreAsAdmin32bitInstall]
+CopyFiles = ExploreAsAdmin32bit.Files.Inf
+CopyFiles = ExploreAsAdmin32bit.Files.System
+CopyFiles = ExploreAsAdmin32bit.Files.Icon
+AddReg    = ExploreAsAdmin32bit.AddReg
+
+[DefaultInstall]
+CopyFiles = ExploreAsAdmin32bit.Files.Inf
+CopyFiles = ExploreAsAdmin32bit.Files.System
+CopyFiles = ExploreAsAdmin32bit.Files.Icon
+AddReg    = ExploreAsAdmin32bit.AddReg
+
+[DefaultUnInstall]
+DelFiles  = ExploreAsAdmin32bit.Files.Inf
+DelFiles  = ExploreAsAdmin32bit.Files.System
+DelReg    = ExploreAsAdmin32bit.DelReg
+
+[SourceDisksNames]
+55="Explore as Administrator 32-bit","",1
+
+[SourceDisksFiles]
+ExploreAsAdmin32bit.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+ExploreAsAdmin32bit.Files.Inf = 17
+ExploreAsAdmin32bit.Files.Icon = 11
+
+[ExploreAsAdmin32bit.Files.Inf]
+ExploreAsAdmin32bit.INF
+
+[ExploreAsAdmin32bit.Files.Icon]
+ElevationPowertoys.ico
+
+[ExploreAsAdmin32bit.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ExploreAsAdmin32bit.inf"
+
+HKCR,Directory\Shell\ExploreAsAdmin32bit,,,"%ExploreAsAdmin32bitAccel%"
+HKCR,Directory\Shell\ExploreAsAdmin32bit\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%ProgramFiles(x86)%\Explorer++\Explorer++.exe"" ""%L"""
+HKCR,Drive\Shell\ExploreAsAdmin32bit,,,"%ExploreAsAdmin32bitAccel%"
+HKCR,Drive\Shell\ExploreAsAdmin32bit\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%ProgramFiles(x86)%\Explorer++\Explorer++.exe"" ""%L"""
+
+[ExploreAsAdmin32bit.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\ExploreAsAdmin32bit
+HKCR,Drive\Shell\ExploreAsAdmin32bit
+
+[Strings]
+DisplayName="Explore as Administrator 32-bit PowerToy for Windows (Uninstall only)"
+DisplayVersion="1.0.0"
+ExploreAsAdmin32bitAccel="Explore as Administrator 32-bit"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ExploreAsAdmin32bit"

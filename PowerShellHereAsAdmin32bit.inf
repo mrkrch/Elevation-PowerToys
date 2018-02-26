@@ -1,0 +1,113 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
+; //***************************************************************************
+; // ***** Script Header *****
+; // ===================================
+; // Script PowerToys for Windows 64-bit
+; // ===================================
+; //
+; // "PowerShell Prompt Here as Administrator 32-bit" PowerToy for Windows PowerShell
+; //
+; // File:      PowerShellHereAsAdmin32bit.inf
+; //
+; // Additional files required:  PSAsAdmin.cmd, ElevationPowertoys.ico
+; //
+; // Purpose:   To add a "PowerShell Prompt Here as Administrator 32-bit" entry to the
+; //            Explorer context menu for Windows PowerShell 1.0 on Windows
+; //            Vista
+; //
+; // Additional requirement:  "Elevate Command" PowerToy for Windows
+; //                          must be installed.
+; //
+; // Version:   1.0.0
+; // Date :     05/07/2010
+; //
+; // History:
+; // 1.0.0   05/07/2010  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[PowerShellHereAsAdmin32bitInstall]
+CopyFiles = PowerShellHereAsAdmin32bit.Files.Inf
+CopyFiles = PowerShellHereAsAdmin32bit.Files.System
+CopyFiles = PowerShellHereAsAdmin32bit.Files.Icon
+AddReg    = PowerShellHereAsAdmin32bit.AddReg
+
+[DefaultInstall]
+CopyFiles = PowerShellHereAsAdmin32bit.Files.Inf
+CopyFiles = PowerShellHereAsAdmin32bit.Files.System
+CopyFiles = PowerShellHereAsAdmin32bit.Files.Icon
+AddReg    = PowerShellHereAsAdmin32bit.AddReg
+
+[DefaultUnInstall]
+DelFiles  = PowerShellHereAsAdmin32bit.Files.Inf
+DelFiles  = PowerShellHereAsAdmin32bit.Files.System
+DelReg    = PowerShellHereAsAdmin32bit.DelReg
+
+[SourceDisksNames]
+55="PowerShell Prompt Here as Administrator 32-bit","",1
+
+[SourceDisksFiles]
+PowerShellHereAsAdmin32bit.INF=55
+ElevationPowertoys.ico=55
+PSAsAdmin32.cmd=55
+
+[DestinationDirs]
+PowerShellHereAsAdmin32bit.Files.Inf = 17
+PowerShellHereAsAdmin32bit.Files.System = 11
+PowerShellHereAsAdmin32bit.Files.Icon = 11
+
+[PowerShellHereAsAdmin32bit.Files.Inf]
+PowerShellHereAsAdmin32bit.INF
+
+[PowerShellHereAsAdmin32bit.Files.System]
+PSAsAdmin32.cmd
+
+[PowerShellHereAsAdmin32bit.Files.Icon]
+ElevationPowertoys.ico
+
+[PowerShellHereAsAdmin32bit.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\PowerShellHereAsAdmin32bit.inf"
+
+HKCR,Directory\Shell\PowerShellHereAsAdmin32bit,,,"%PowerShellHereAsAdmin32bitAccel%"
+HKCR,Directory\Shell\PowerShellHereAsAdmin32bit\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%16425%\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'; $host.ui.rawui.windowtitle = 'Administrator: ' + $host.ui.rawui.windowtitle"
+HKCR,Drive\Shell\PowerShellHereAsAdmin32bit,,,"%PowerShellHereAsAdmin32bitAccel%"
+HKCR,Drive\Shell\PowerShellHereAsAdmin32bit\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%16425%\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'; $host.ui.rawui.windowtitle = 'Administrator: ' + $host.ui.rawui.windowtitle"
+
+[PowerShellHereAsAdmin32bit.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\PowerShellHereAsAdmin32bit
+HKCR,Drive\Shell\PowerShellHereAsAdmin32bit
+
+[Strings]
+DisplayName="PowerShell Prompt Here as Administrator 32-bit PowerToy for Windows PowerShell (Uninstall only)"
+DisplayVersion="1.0.0"
+PowerShellHereAsAdmin32bitAccel="PowerShell Prompt Here as Administrator 32-bit"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\PowerShellHereAsAdmin32bit"

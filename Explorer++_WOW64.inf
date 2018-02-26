@@ -1,0 +1,74 @@
+;
+; Installes 32-bit Explorer++ into %ProgramFiles(x86)%
+; For use on Windows 64-bit
+;
+[version]
+Signature="$Windows NT$"
+
+[Explorer++Install]
+CopyFiles = Explorer++.Files.Inf
+CopyFiles = Explorer++.Files.ProgramFilesx86
+AddReg    = Explorer++.AddReg
+UpdateInis = Explorer++.Links
+
+[DefaultInstall]
+CopyFiles = Explorer++.Files.Inf
+CopyFiles = Explorer++.Files.ProgramFilesx86
+AddReg    = Explorer++.AddReg
+UpdateInis = Explorer++.Links
+
+[DefaultUnInstall]
+DelFiles = Explorer++.Files.Inf
+DelFiles = Explorer++.Files.ProgramFilesx86
+DelReg   = Explorer++.DelReg
+AddReg   = Explorer++.Once.UnInst.Reg
+UpdateInis = Explorer++.Links.Remove
+
+[SourceDisksNames]
+55="Explorer++","",1 
+
+[SourceDisksFiles]
+Explorer++.exe=55
+Explorer++_WOW64.inf=55
+History.txt=55
+Readme.txt=55
+
+[DestinationDirs]
+Explorer++.Files.Inf = 17
+Explorer++.Files.ProgramFilesx86 = 16426,%ProgramFolder%
+
+[Explorer++.Files.Inf]
+Explorer++_WOW64.inf
+
+[Explorer++.Files.ProgramFilesx86]
+Explorer++.exe
+History.txt
+Readme.txt
+
+[Explorer++.Once.UnInst.Reg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup,Explorer++,,"%11%\cmd.exe /c rd ""%16426%\%ProgramFolder%"""
+
+[Explorer++.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\Explorer++_WOW64.inf"
+
+[Explorer++.DelReg]
+HKLM,%UDHERE%
+
+[Explorer++.Links]
+setup.ini, progman.groups,,""group1="%16407%\%StartMenuFolder%"""
+setup.ini, group1,,"""%Shortcut%"",""""""%16426%\%ProgramFolder%\Explorer++.exe"""""""
+
+[Explorer++.Links.Remove]
+setup.ini, progman.groups,,""group1="%16407%\%StartMenuFolder%"""
+setup.ini, group1,,"""%Shortcut%"""
+
+[Strings]
+DisplayName="Explorer++ 32-bit (Uninstall only)"
+DisplayVersion="1.0 RC"
+ProgramFolder="Explorer++"
+StartMenuFolder="Explorer++ 32-bit"
+Shortcut="Explorer++"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\Explorer++WOW64"
+

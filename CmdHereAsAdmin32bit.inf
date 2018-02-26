@@ -1,0 +1,110 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
+; //***************************************************************************
+; // ***** Script Header *****
+; // ===================================
+; // Script PowerToys for Windows 64-bit
+; // ===================================
+; //
+; // "CMD Prompt Here as Administrator 32-bit" PowerToy for Windows Vista 64-bit
+; //
+; // File:      CmdHereAsAdmin32bit.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico, CmdAsAdmin32.cmd
+; //
+; // Purpose:   To add a "CMD Prompt Here as Administrator 32-bit" entry to the 
+; //            Explorer context menu for Windows Vista and higher.
+; //
+; // Additional requirement:  "Elevate Command" PowerToy for Windows must
+; //                          be installed for CmdAsAdmin.cmd to work
+; //
+; // Version:   1.0.0
+; // Date :     05/07/2010
+; //
+; // History:
+; // 1.0.0   05/07/2010  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+[version]
+Signature="$Windows NT$"
+
+[CmdHereAsAdmin32bitInstall]
+CopyFiles = CmdHereAsAdmin32bit.Files.Inf
+CopyFiles = CmdHereAsAdmin32bit.Files.System
+CopyFiles = CmdHereAsAdmin32bit.Files.Icon
+AddReg    = CmdHereAsAdmin32bit.AddReg
+
+[DefaultInstall]
+CopyFiles = CmdHereAsAdmin32bit.Files.Inf
+CopyFiles = CmdHereAsAdmin32bit.Files.System
+CopyFiles = CmdHereAsAdmin32bit.Files.Icon
+AddReg    = CmdHereAsAdmin32bit.AddReg
+
+[DefaultUnInstall]
+DelFiles  = CmdHereAsAdmin32bit.Files.Inf
+DelFiles  = CmdHereAsAdmin32bit.Files.System
+DelReg    = CmdHereAsAdmin32bit.DelReg
+
+[SourceDisksNames]
+55="CMD Prompt Here as Administrator 32-bit","",1
+
+[SourceDisksFiles]
+CmdHereAsAdmin32bit.INF=55
+ElevationPowertoys.ico=55
+CmdAsAdmin32.cmd=55
+
+[DestinationDirs]
+CmdHereAsAdmin32bit.Files.Inf = 17
+CmdHereAsAdmin32bit.Files.System = 11
+CmdHereAsAdmin32bit.Files.Icon = 11
+
+[CmdHereAsAdmin32bit.Files.Inf]
+CmdHereAsAdmin32bit.INF
+
+[CmdHereAsAdmin32bit.Files.Icon]
+ElevationPowertoys.ico
+
+[CmdHereAsAdmin32bit.Files.System]
+CmdAsAdmin32.cmd
+
+[CmdHereAsAdmin32bit.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\CmdHereAsAdmin32bit.inf"
+HKCR,Directory\Shell\runas32,,,"%CmdHereAsAdmin32bitAccel%"
+HKCR,Directory\Shell\runas32\command,,,"""%11%\cmd.exe"" /c Elevate.cmd ""%16425%\cmd.exe"" /k cd /d ""%1"""
+HKCR,Drive\Shell\runas32,,,"%CmdHereAsAdmin32bitAccel%"
+HKCR,Drive\Shell\runas32\command,,,"""%11%\cmd.exe"" /c Elevate.cmd ""%16425%\cmd.exe"" /k cd /d ""%1"""
+
+[CmdHereAsAdmin32bit.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\runas32
+HKCR,Drive\Shell\runas32
+
+[Strings]
+DisplayName="CMD Prompt Here as Administrator 32-bit PowerToy for Windows 64-bit (Uninstall only)"
+DisplayVersion="1.0.0"
+CmdHereAsAdmin32bitAccel="CMD Prompt Here as Administrator 32-bit"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\CmdHereAsAdmin32bit"

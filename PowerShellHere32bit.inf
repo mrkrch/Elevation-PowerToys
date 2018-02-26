@@ -1,0 +1,100 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
+; //***************************************************************************
+; // ***** Script Header *****
+; // ===================================
+; // Script PowerToys for Windows 64-bit
+; // ===================================
+; //
+; // "PowerShell Prompt Here  32-bit" PowerToy for Windows PowerShell
+; //
+; // File:      PowerShellHere32bit.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
+; // Purpose:   To add a PowerShell Prompt Here 32-bit entry to the Explorer context 
+; //            menu for Windows PowerShell
+; //
+; // Version:   1.0.0
+; // Date :     05/07/2010
+; //
+; // History:
+; // 1.0.0   05/07/2010  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[PowerShellHere32bitInstall]
+CopyFiles = PowerShellHere32bit.Files.Inf
+CopyFiles = PowerShellHere32bit.Files.Icon
+AddReg    = PowerShellHere32bit.AddReg
+
+[DefaultInstall]
+CopyFiles = PowerShellHere32bit.Files.Inf
+CopyFiles = PowerShellHere32bit.Files.Icon
+AddReg    = PowerShellHere32bit.AddReg
+
+[DefaultUnInstall]
+DelFiles  = PowerShellHere32bit.Files.Inf
+DelReg    = PowerShellHere32bit.DelReg
+
+[SourceDisksNames]
+55="PowerShell Prompt Here 32-bit","",1
+
+[SourceDisksFiles]
+PowerShellHere32bit.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+PowerShellHere32bit.Files.Inf = 17
+
+[PowerShellHere32bit.Files.Inf]
+PowerShellHere32bit.INF
+
+[PowerShellHere32bit.Files.Icon]
+ElevationPowertoys.ico
+
+[PowerShellHere32bit.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\PowerShellHere32bit.inf"
+
+HKCR,Directory\Shell\PowerShellHere32bit,,,"%PowerShellHere32bitAccel%"
+HKCR,Directory\Shell\PowerShellHere32bit\command,,,"""%16425%\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'"
+HKCR,Drive\Shell\PowerShellHere32bit,,,"%PowerShellHere32bitAccel%"
+HKCR,Drive\Shell\PowerShellHere32bit\command,,,"""%16425%\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'"
+
+[PowerShellHere32bit.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\PowerShellHere32bit
+HKCR,Drive\Shell\PowerShellHere32bit
+
+[Strings]
+DisplayName="PowerShell Prompt Here 32-bit PowerToy for Windows PowerShell (Uninstall only)"
+DisplayVersion="1.0.0"
+PowerShellHere32bitAccel="PowerShell Prompt Here 32-bit"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\PowerShellHere32bit"
