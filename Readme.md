@@ -2,7 +2,7 @@
 
 ##### Context menu tools for launching elevated Command Prompt, PowerShell, PowerShell IDE, and more.
 
-[b]At a Glance:[/b]
+#### At a Glance: ####
 - Run as Administrator for third-party scripting tools
 - Run as Another User
 - Prompt Here as System for CMD and Windows PowerShell
