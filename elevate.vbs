@@ -13,12 +13,23 @@
 ' //
 ' // Usage:     (Not used directly.  Launched from Elevate.cmd.)
 ' //
-' // Version:   1.0.1
-' // Date :     01/03/2007
+' // Version:   1.0.1ab
+' // Date :     01/28/2009
 ' //
 ' // History:
 ' // 1.0.0   01/02/2007  Created initial version.
 ' // 1.0.1   01/03/2007  Added detailed usage output.
+' // 1.0.1a  01/20/2009  Special version to work around Windows 7 Beta bug in
+' //                     ShellExecute where vArguments is not passed when stored
+' //                     in a variable.  Used VBScript Execute statement to pass
+' //                     all ShellExecute paramaters as literal strings.
+' // 1.0.1b  01/28/2009  New special version to work around Windows 7 Beta bug in
+' //                     ShellExecute where vArguments is not passed when stored
+' //                     in a variable.  Could not predict incoming command
+' //                     quoting in 1.0.1a.  Using a new workaround - appending
+' //                     a blank string to the strArguments variable in the
+' //                     ShellExecute parameter list (i.e. passing an expression
+' //                     as vArguments).
 ' //
 ' // ***** End Header *****
 ' //***************************************************************************
@@ -32,7 +43,7 @@ Set objWshProcessEnv = objWshShell.Environment("PROCESS")
 ' in through environment variables.
 strCommandLine = objWshProcessEnv("ELEVATE_CMDLINE")
 strApplication = objWshProcessEnv("ELEVATE_APP")
-strArguments = Right(strCommandLine, (Len(strCommandLine) - Len(strApplication)))
+strArguments = Trim(Right(strCommandLine, (Len(strCommandLine) - Len(strApplication))))
 
 If (WScript.Arguments.Count >= 1) Then
     strFlag = WScript.Arguments(0)
@@ -42,7 +53,7 @@ If (WScript.Arguments.Count >= 1) Then
         DisplayUsage
         WScript.Quit
     Else
-        objShell.ShellExecute strApplication, strArguments, "", "runas"
+        objShell.ShellExecute strApplication, "" & strArguments, "", "runas"
     End If
 Else
     DisplayUsage
