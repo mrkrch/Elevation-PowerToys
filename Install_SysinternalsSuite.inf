@@ -1,8 +1,29 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
 ; //***************************************************************************
 ; // ***** Script Header *****
-; // =======================================================
-; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
-; // =======================================================
+; // ===============================
+; // Elevation PowerToys for Windows 
+; // ===============================
 ; //
 ; // Sysinternals Suite INF Installer
 ; //
@@ -10,8 +31,8 @@
 ; //
 ; // Purpose:   Installs the Sysinternals Suite
 ; //
-; // Version:   1.0.1
-; // Date :     04/29/2008
+; // Version:   1.0.3
+; // Date :     02/21/2010
 ; //
 ; // History:
 ; // 1.0.0   02/09/2008  Created initial version for Sysinternals Suite - 
@@ -20,6 +41,7 @@
 ; //                     26, 2008.  (ShellRunas added to Suite.)
 ; // 1.0.2   04/29/2008  No change, just validated for Sysinternals Suite - 
 ; //                     Published: April 17, 2008.
+; // 1.0.3   02/21/2010  Updated for Sysinternals Suite published: January 19, 2010
 ; //
 ; // ***** End Header *****
 ; //***************************************************************************
@@ -80,15 +102,17 @@ Bginfo.exe
 Cacheset.exe
 Clockres.exe
 Contig.exe
+Coreinfo.exe
 ctrl2cap.amd.sys
 ctrl2cap.exe
 ctrl2cap.nt4.sys
 ctrl2cap.nt5.sys
 dbgview.chm
 Dbgview.exe
+Desktops.exe
+Disk2vhd.chm
+disk2vhd.exe
 diskext.exe
-Diskmnt.exe
-Diskmnt.hlp
 Diskmon.exe
 DISKMON.HLP
 DiskView.exe
@@ -96,8 +120,6 @@ DMON.SYS
 du.exe
 efsdump.exe
 Eula.txt
-Filemon.exe
-FILEMON.HLP
 handle.exe
 hex2dec.exe
 junction.exe
@@ -107,17 +129,16 @@ livekd.exe
 LoadOrd.exe
 logonsessions.exe
 movefile.exe
-newsid.exe
 ntfsinfo.exe
 pagedfrg.exe
 pagedfrg.hlp
 pdh.dll
 pendmoves.exe
-PHYSMEM.EXE
 pipelist.exe
 PORTMON.CNT
 portmon.exe
 PORTMON.HLP
+procdump.exe
 procexp.chm
 procexp.exe
 ProcFeatures.exe
@@ -138,10 +159,7 @@ pssuspend.exe
 Pstools.chm
 psversion.txt
 RegDelNull.exe
-Reghide.exe
 regjump.exe
-Regmon.exe
-REGMON.HLP
 RootkitRevealer.chm
 RootkitRevealer.exe
 sdelete.exe
@@ -154,6 +172,8 @@ tcpvcon.exe
 tcpview.chm
 Tcpview.exe
 TCPVIEW.HLP
+Vmmap.chm
+vmmap.exe
 Volumeid.exe
 whois.exe
 Winobj.exe
@@ -180,37 +200,40 @@ HKLM,%UDHERE%
 
 [SysinternalsSuite.Links]
 setup.ini, progman.groups,,""group1="%16407%\%SysinternalsSuiteGroup%\"""
-setup.ini, group1,,"""%SysinternalsSuiteCmdPrompt%"",""""""%11%\cmd.exe"""" /k cd /d """"%16422%\Sysinternals Suite"""""",,,,""%16422%\Sysinternals Suite"",""%SysinternalsSuiteCmdPrompt%"""
+setup.ini, group1,,"""%SysinternalsSuiteCmdPrompt%"",""""""%11%\cmd.exe"""" /k cd /d """"%16422%\%SysinternalsSuiteGroup%"""""",,,,""%16422%\%SysinternalsSuiteGroup%"",""%SysinternalsSuiteCmdPrompt%"""
 setup.ini, group1,,"""%SysinternalsSuiteURL%"",""""""%16422%\Internet Explorer\iexplore.exe"""" """"http://www.microsoft.com/technet/sysinternals/utilities/sysinternalssuite.mspx"""""",""%16422%\Internet Explorer\iexplore.exe"",1,,""%HOMEDRIVE%%HOMEPATH%"",""%SysinternalsSuiteURL%"""
-setup.ini, group1,,"""%AccessEnumDesc%"",""""""%16422%\Sysinternals Suite\AccessEnum.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%AccessEnumDesc%"""
-setup.ini, group1,,"""%AdExplorerDesc%"",""""""%16422%\Sysinternals Suite\AdExplorer.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%AdExplorerDesc%"""
-setup.ini, group1,,"""%AutologonDesc%"",""""""%16422%\Sysinternals Suite\Autologon.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%AutologonDesc%"""
-setup.ini, group1,,"""%ADInsightDesc%"",""""""%16422%\Sysinternals Suite\ADInsight.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%ADInsightDesc%"""
-setup.ini, group1,,"""%AutorunsDesc%"",""""""%16422%\Sysinternals Suite\Autoruns.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%AutorunsDesc%"""
-setup.ini, group1,,"""%BginfoDesc%"",""""""%16422%\Sysinternals Suite\Bginfo.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%BginfoDesc%"""
-setup.ini, group1,,"""%DbgviewDesc%"",""""""%16422%\Sysinternals Suite\Dbgview.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%DbgviewDesc%"""
-setup.ini, group1,,"""%DiskmonDesc%"",""""""%16422%\Sysinternals Suite\Diskmon.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%DiskmonDesc%"""
-setup.ini, group1,,"""%DiskViewDesc%"",""""""%16422%\Sysinternals Suite\DiskView.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%DiskViewDesc%"""
-setup.ini, group1,,"""%LoadOrdDesc%"",""""""%16422%\Sysinternals Suite\LoadOrd.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%LoadOrdDesc%"""
-setup.ini, group1,,"""%ProcexpDesc%"",""""""%16422%\Sysinternals Suite\procexp.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%ProcexpDesc%"""
-setup.ini, group1,,"""%ProcmonDesc%"",""""""%16422%\Sysinternals Suite\Procmon.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%ProcmonDesc%"""
-setup.ini, group1,,"""%RootkitRevealerDesc%"",""""""%16422%\Sysinternals Suite\RootkitRevealer.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%RootkitRevealerDesc%"""
-setup.ini, group1,,"""%TcpviewDesc%"",""""""%16422%\Sysinternals Suite\Tcpview.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%TcpviewDesc%"""
-setup.ini, group1,,"""%WinobjDesc%"",""""""%16422%\Sysinternals Suite\Winobj.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%WinobjDesc%"""
-setup.ini, group1,,"""%ZoomItDesc%"",""""""%16422%\Sysinternals Suite\ZoomIt.exe"""""",,,,""""%16422%\Sysinternals Suite"""",""%ZoomItDesc%"""
+setup.ini, group1,,"""%AccessEnumDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\AccessEnum.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%AccessEnumDesc%"""
+setup.ini, group1,,"""%AdExplorerDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\AdExplorer.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%AdExplorerDesc%"""
+setup.ini, group1,,"""%AutologonDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\Autologon.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%AutologonDesc%"""
+setup.ini, group1,,"""%ADInsightDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\ADInsight.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%ADInsightDesc%"""
+setup.ini, group1,,"""%AutorunsDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\Autoruns.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%AutorunsDesc%"""
+setup.ini, group1,,"""%BginfoDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\Bginfo.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%BginfoDesc%"""
+setup.ini, group1,,"""%DbgviewDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\Dbgview.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%DbgviewDesc%"""
+setup.ini, group1,,"""%DiskmonDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\Diskmon.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%DiskmonDesc%"""
+setup.ini, group1,,"""%DiskViewDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\DiskView.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%DiskViewDesc%"""
+setup.ini, group1,,"""%LoadOrdDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\LoadOrd.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%LoadOrdDesc%"""
+setup.ini, group1,,"""%ProcexpDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\procexp.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%ProcexpDesc%"""
+setup.ini, group1,,"""%ProcmonDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\Procmon.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%ProcmonDesc%"""
+setup.ini, group1,,"""%RootkitRevealerDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\RootkitRevealer.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%RootkitRevealerDesc%"""
+setup.ini, group1,,"""%TcpviewDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\Tcpview.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%TcpviewDesc%"""
+setup.ini, group1,,"""%VMMapDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\VMMap.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%VMMapDesc%"""
+setup.ini, group1,,"""%WinobjDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\Winobj.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%WinobjDesc%"""
+setup.ini, group1,,"""%ZoomItDesc%"",""""""%16422%\%SysinternalsSuiteGroup%\ZoomIt.exe"""""",,,,""""%16422%\%SysinternalsSuiteGroup%"""",""%ZoomItDesc%"""
 
 setup.ini, progman.groups,,""group2="%16407%\%SysinternalsSuiteGroup%\%SysinternalsSuiteDocs%\"""
-setup.ini, group2,,"""%PsToolsHelp%"",""""""%16422%\Sysinternals Suite\PsTools.chm"""""""
-setup.ini, group2,,"""%AdExplorerHelp%"",""""""%16422%\Sysinternals Suite\AdExplorer.chm"""""""
-setup.ini, group2,,"""%ADInsightHelp%"",""""""%16422%\Sysinternals Suite\ADInsight.chm"""""""
-setup.ini, group2,,"""%AutorunsHelp%"",""""""%16422%\Sysinternals Suite\Autoruns.chm"""""""
-setup.ini, group2,,"""%DbgviewHelp%"",""""""%16422%\Sysinternals Suite\Dbgview.chm"""""""
-setup.ini, group2,,"""%DiskmonHelp%"",""""""%16422%\Sysinternals Suite\Diskmon.hlp"""""""
-setup.ini, group2,,"""%ProcexpHelp%"",""""""%16422%\Sysinternals Suite\Procexp.chm"""""""
-setup.ini, group2,,"""%ProcmonHelp%"",""""""%16422%\Sysinternals Suite\Procexp.chm"""""""
-setup.ini, group2,,"""%RootkitRevealerHelp%"",""""""%16422%\Sysinternals Suite\RootkitRevealer.chm"""""""
-setup.ini, group2,,"""%TcpviewHelp%"",""""""%16422%\Sysinternals Suite\Tcpview.chm"""""""
-setup.ini, group2,,"""%WinobjHelp%"",""""""%16422%\Sysinternals Suite\Winobj.hlp"""""""
+setup.ini, group2,,"""%PsToolsHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\PsTools.chm"""""""
+setup.ini, group2,,"""%AdExplorerHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\AdExplorer.chm"""""""
+setup.ini, group2,,"""%ADInsightHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\ADInsight.chm"""""""
+setup.ini, group2,,"""%AutorunsHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\Autoruns.chm"""""""
+setup.ini, group2,,"""%DbgviewHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\Dbgview.chm"""""""
+setup.ini, group2,,"""%Disk2vhdHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\Disk2vhd.chm"""""""
+setup.ini, group2,,"""%DiskmonHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\Diskmon.hlp"""""""
+setup.ini, group2,,"""%ProcexpHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\Procexp.chm"""""""
+setup.ini, group2,,"""%ProcmonHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\procmon.chm"""""""
+setup.ini, group2,,"""%RootkitRevealerHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\RootkitRevealer.chm"""""""
+setup.ini, group2,,"""%TcpviewHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\Tcpview.chm"""""""
+setup.ini, group2,,"""%VMMapHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\VMMap.chm"""""""
+setup.ini, group2,,"""%WinobjHelp%"",""""""%16422%\%SysinternalsSuiteGroup%\Winobj.hlp"""""""
 
 [SysinternalsSuite.Links.Remove]
 setup.ini, progman.groups,,""group1="%16407%\%SysinternalsSuiteGroup%"""
@@ -230,6 +253,7 @@ setup.ini, group1,,"""%ProcexpDesc%""
 setup.ini, group1,,"""%ProcmonDesc%""
 setup.ini, group1,,"""%RootkitRevealerDesc%""
 setup.ini, group1,,"""%TcpviewDesc%""
+setup.ini, group1,,"""%VMMapDesc%""
 setup.ini, group1,,"""%WinobjDesc%""
 setup.ini, group1,,"""%ZoomItDesc%""
 
@@ -239,16 +263,19 @@ setup.ini, group2,,"""%AdExplorerHelp%""
 setup.ini, group2,,"""%ADInsightHelp%""
 setup.ini, group2,,"""%AutorunsHelp%""
 setup.ini, group2,,"""%DbgviewHelp%""
+setup.ini, group2,,"""%Disk2vhdHelp%""
 setup.ini, group2,,"""%DiskmonHelp%""
 setup.ini, group2,,"""%ProcexpHelp%""
 setup.ini, group2,,"""%ProcmonHelp%""
 setup.ini, group2,,"""%RootkitRevealerHelp%""
+setup.ini, group2,,"""%VMMapHelp%""
 setup.ini, group2,,"""%TcpviewHelp%""
 setup.ini, group2,,"""%WinobjHelp%""
 
 
 [Strings]
 DisplayName = "Sysinternals Suite (Uninstall only)"
+DisplayVersion = "2010-01-19"
 
 SysinternalsSuiteGroup = "Sysinternals Suite"
 SysinternalsSuiteCmdPrompt = "Sysinternals Suite Command Prompt"
@@ -267,6 +294,7 @@ ProcexpDesc = "Process Explorer"
 ProcmonDesc = "Process Monitor"
 RootkitRevealerDesc = "RootkitRevealer"
 TcpviewDesc = "TCPView for Windows"
+VMMapDesc = "VMMap"
 WinobjDesc = "WinObj"
 ZoomItDesc = "ZoomIt"
 
@@ -276,11 +304,13 @@ AdExplorerHelp = "Active Directory Explorer Help"
 ADInsightHelp = "Insight for Active Directory Help"
 AutorunsHelp = "AutoRuns for Windows Help"
 DbgviewHelp = "DebugView for Windows Help"
+Disk2vhdHelp = "Disk2vhd Help"
 DiskmonHelp = "DiskMon for Windows Help"
 ProcexpHelp = "Process Explorer Help"
 ProcmonHelp = "Process Monitor Help"
-RootkitRevealerHelp = "RootkitRevealerDesc Help"
+RootkitRevealerHelp = "RootkitRevealer Help"
 TcpviewHelp = "TCPView for Windows Help"
+VMMapHelp = "VMMap Help"
 WinobjHelp = "WinObj Help"
 
 UDHERE = "Software\Microsoft\Windows\CurrentVersion\Uninstall\SysinternalsSuite"
