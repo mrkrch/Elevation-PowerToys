@@ -31,15 +31,15 @@
 # // Purpose:   PowerShell Script to generate an INF file that installs the 
 # //            Sysinternals Suite.
 # //
-# // Version:   1.0.0
+# // Version:   1.0.1
 # //
 # // Revisions:
 # // ----------
 # // 1.0.0   10/27/2010   Created script.
-# //
+# // 1.0.1   06/20/2012   Patched script to work with current webpage
 # //***************************************************************************
 
-$scriptVersion = "1.0.0"
+$scriptVersion = "1.0.1"
 
 
 function Extract-Zip
@@ -59,7 +59,7 @@ function Extract-Zip
 $invocation = (Get-Variable MyInvocation -Scope 0).Value
 $scriptPath = Split-Path $Invocation.MyCommand.Path
 
-$uriZipFile = "http://download.sysinternals.com/Files/SysinternalsSuite.zip"
+$uriZipFile = "http://download.sysinternals.com/files/SysinternalsSuite.zip"
 $uriWebPage = "http://technet.microsoft.com/en-us/sysinternals/bb842062.aspx"
 $regexPattern = "<p>Updated: (.+?)<\/p>"
 $userAgent = "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; .NET CLR 1.0.3705;)"
