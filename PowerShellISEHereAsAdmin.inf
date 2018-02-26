@@ -1,0 +1,107 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
+; //***************************************************************************
+; // ***** Script Header *****
+; // ===============================
+; // Elevation PowerToys for Windows
+; // ===============================
+; //
+; // "PowerShell ISE Here as Administrator" PowerToy for Windows PowerShell 2.0
+; //
+; // File:      PowerShellISEHereAsAdmin.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
+; // Purpose:   To add a "PowerShell ISE Here as Administrator" entry to the
+; //            Explorer context menu for drives and folders.
+; //
+; // Additional requirement:  "Elevate Command" PowerToy for Windows Vista
+; //                          must be installed.
+; //
+; // Version:   1.0.0
+; // Date :     12/31/2009
+; //
+; // History:
+; // 1.0.0   12/31/2009  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[PowerShellISEHereAsAdminInstall]
+CopyFiles = PowerShellISEHereAsAdmin.Files.Inf
+CopyFiles = PowerShellISEHereAsAdmin.Files.System
+CopyFiles = PowerShellISEHereAsAdmin.Files.Icon
+AddReg    = PowerShellISEHereAsAdmin.AddReg
+
+[DefaultInstall]
+CopyFiles = PowerShellISEHereAsAdmin.Files.Inf
+CopyFiles = PowerShellISEHereAsAdmin.Files.System
+CopyFiles = PowerShellISEHereAsAdmin.Files.Icon
+AddReg    = PowerShellISEHereAsAdmin.AddReg
+
+[DefaultUnInstall]
+DelFiles  = PowerShellISEHereAsAdmin.Files.Inf
+DelFiles  = PowerShellISEHereAsAdmin.Files.System
+DelReg    = PowerShellISEHereAsAdmin.DelReg
+
+[SourceDisksNames]
+55="PowerShell ISE Here as Administrator","",1
+
+[SourceDisksFiles]
+PowerShellISEHereAsAdmin.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+PowerShellISEHereAsAdmin.Files.Inf = 17
+PowerShellISEHereAsAdmin.Files.Icon = 11
+
+[PowerShellISEHereAsAdmin.Files.Inf]
+PowerShellISEHereAsAdmin.INF
+
+[PowerShellISEHereAsAdmin.Files.Icon]
+ElevationPowertoys.ico
+
+[PowerShellISEHereAsAdmin.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\PowerShellISEHereAsAdmin.inf"
+
+HKCR,Directory\Shell\PowerShellISEHereAsAdmin,,,"%PowerShellISEHereAsAdminAccel%"
+HKCR,Directory\Shell\PowerShellISEHereAsAdmin\command,,0x00020000,"Elevate.cmd ""%SystemRoot%\System32\cmd.exe"" /c start """" /D ""%L"" ""%SystemRoot%\System32\windowspowershell\v1.0\powershell_ise.exe"""
+HKCR,Drive\Shell\PowerShellISEHereAsAdmin,,,"%PowerShellISEHereAsAdminAccel%"
+HKCR,Drive\Shell\PowerShellISEHereAsAdmin\command,,0x00020000,"Elevate.cmd ""%SystemRoot%\System32\cmd.exe"" /c start """" /D ""%L"" ""%SystemRoot%\System32\windowspowershell\v1.0\powershell_ise.exe"""
+
+[PowerShellISEHereAsAdmin.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\PowerShellISEHereAsAdmin
+HKCR,Drive\Shell\PowerShellISEHereAsAdmin
+
+[Strings]
+DisplayName="PowerShell ISE Here as Administrator PowerToy for Windows PowerShell 2.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+PowerShellISEHereAsAdminAccel="PowerShell ISE Here as Administrator"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\PowerShellISEHereAsAdmin"

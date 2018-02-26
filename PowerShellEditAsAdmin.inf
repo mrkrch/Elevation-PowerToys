@@ -1,0 +1,104 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
+; //***************************************************************************
+; // ***** Script Header *****
+; // ===============================
+; // Elevation PowerToys for Windows
+; // ===============================
+; //
+; // Edit PowerShell Script As Administrator PowerToy for Windows PowerShell 2.0
+; //
+; // File:      PowerShellEditAsAdmin.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
+; // Purpose:   To add an "Edit as Administrator" entry to the Explorer context 
+; //            menu for Windows PowerShell scripts.
+; //
+; // Version:   1.0.0
+; // Date :     12/31/2009
+; //
+; // History:
+; // 1.0.0   12/31/2009  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[PowerShellEditAsAdminInstall]
+CopyFiles = PowerShellEditAsAdmin.Files.Inf
+CopyFiles = PowerShellEditAsAdmin.Files.Icon
+AddReg    = PowerShellEditAsAdmin.AddReg
+
+[DefaultInstall]
+CopyFiles = PowerShellEditAsAdmin.Files.Inf
+CopyFiles = PowerShellEditAsAdmin.Files.Icon
+AddReg    = PowerShellEditAsAdmin.AddReg
+
+[DefaultUnInstall]
+DelFiles = PowerShellEditAsAdmin.Files.Inf
+DelReg   = PowerShellEditAsAdmin.DelReg
+
+[SourceDisksNames]
+55="Elevate PowerShell Script","",1
+
+[SourceDisksFiles]
+PowerShellEditAsAdmin.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+PowerShellEditAsAdmin.Files.Inf = 17
+PowerShellEditAsAdmin.Files.Icon = 11
+
+[PowerShellEditAsAdmin.Files.Inf]
+PowerShellEditAsAdmin.INF
+
+[PowerShellEditAsAdmin.Files.Icon]
+ElevationPowertoys.ico
+
+[PowerShellEditAsAdmin.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\PowerShellEditAsAdmin.inf"
+
+HKCR,Microsoft.PowerShellScript.1\Shell\EditAsAdmin,,,"%PowerShellEditAsAdminAccel%"
+HKCR,Microsoft.PowerShellScript.1\Shell\EditAsAdmin\command,,0x00020000,"""%SystemRoot%\System32\Elevate.cmd"" ""%SystemRoot%\System32\cmd.exe"" /c for /f ""tokens=*"" %%%j in (""%L"") do start """" /D ""%%~dpj"" ""%SystemRoot%\System32\windowspowershell\v1.0\powershell_ise.exe"" ""%%~j"""
+HKCR,Microsoft.PowerShellModule.1\Shell\EditAsAdmin,,,"%PowerShellEditAsAdminAccel%"
+HKCR,Microsoft.PowerShellModule.1\Shell\EditAsAdmin\command,,0x00020000,"""%SystemRoot%\System32\Elevate.cmd"" ""%SystemRoot%\System32\cmd.exe"" /c for /f ""tokens=*"" %%%j in (""%L"") do start """" /D ""%%~dpj"" ""%SystemRoot%\System32\windowspowershell\v1.0\powershell_ise.exe"" ""%%~j"""
+HKCR,Microsoft.PowerShellData.1\Shell\EditAsAdmin,,,"%PowerShellEditAsAdminAccel%"
+HKCR,Microsoft.PowerShellData.1\Shell\EditAsAdmin\command,,0x00020000,"""%SystemRoot%\System32\Elevate.cmd"" ""%SystemRoot%\System32\cmd.exe"" /c for /f ""tokens=*"" %%%j in (""%L"") do start """" /D ""%%~dpj"" ""%SystemRoot%\System32\windowspowershell\v1.0\powershell_ise.exe"" ""%%~j"""
+
+[PowerShellEditAsAdmin.DelReg]
+HKLM,%UDHERE%
+HKCR,Microsoft.PowerShellScript.1\Shell\EditAsAdmin
+HKCR,Microsoft.PowerShellModule.1\Shell\EditAsAdmin
+HKCR,Microsoft.PowerShellData.1\Shell\EditAsAdmin
+
+[Strings]
+DisplayName="Edit PowerShell Script As Administrator PowerToy for Windows PowerShell 2.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+PowerShellEditAsAdminAccel="Edit as Administrator"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\PowerShellEditAsAdmin"
