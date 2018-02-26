@@ -1,0 +1,268 @@
+<job>
+
+<script language="VBScript">
+
+'#########################################################################################
+'#   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+'#########################################################################################
+'#   This Sample Code is provided for the purpose of illustration only and is not 
+'#   intended to be used in a production environment.
+'#
+'#   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+'#   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+'#   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+'#
+'#   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+'#   and to reproduce and distribute the object code form of the Sample Code, provided 
+'#   that You agree: 
+'#   (i)      to not use Our name, logo, or trademarks to market Your software product 
+'#            in which the Sample Code is embedded; 
+'#   (ii)     to include a valid copyright notice on Your software product in which 
+'#            the Sample Code is embedded; and 
+'#   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+'#            against any claims or lawsuits, including attorneys’ fees, that arise 
+'#            or result from the use or distribution of the Sample Code.
+'#########################################################################################
+
+'********************************************************************
+'*
+'* File:           Launchapp.wsf
+'* Version:        1.0.2
+'* Date:           08/21/2010
+'*
+'* Main Function:  This sample launches the application as interactive user.
+'*                 Originaly from: 
+'*                 - Deploying Group Policy Using Windows Vista
+'*                   http://technet.microsoft.com/en-us/library/cc766208(WS.10).aspx
+'*  
+'* Usage:  cscript launchapp.wsf <AppPath>
+'*
+'* Revisions:
+'* 1.0.0                Original script from TechNet.
+'* 1.0.1   05/25/2010   Modified using code from: 
+'*                      - How to detect UAC elevation from VBScript
+'*                        http://blogs.technet.com/jhoward/archive/2008/11/19/how-to-detect-uac-elevation-from-vbscript.aspx.
+'* 1.0.2   08/21/2010   Added logic to handle running on legacy (pre-Vista) OS.
+'*
+'********************************************************************
+
+
+If WScript.Arguments.Length <> 1 Then
+    WScript.Echo "Usage: cscript launchapp.wsf <AppPath>" 
+    WScript.Quit
+End If
+
+strAppPath = WScript.Arguments(0)
+
+
+If GetWmiPropertyValue("root\cimv2", "Win32_OperatingSystem", "BuildNumber") >= 6000 Then
+
+    ' Running on Vista or higher.  Check if running elevated.
+    If IsElevated Then
+        LaunchAsScheduledTask strAppPath
+    Else
+        LaunchDirectly strAppPath
+    End If
+
+Else
+
+    ' Running on legacy OS (XP/2003 or lower).
+    LaunchDirectly strAppPath
+
+End If
+
+
+Sub LaunchAsScheduledTask(strAppPath)
+
+    '***********************************************************
+    ' Running elevated. Create Scheduled Task to launch app.
+    '***********************************************************
+    ' A constant that specifies a registration trigger.
+    const TriggerTypeRegistration = 7
+
+    ' A constant that specifies an executable action.
+    const ActionTypeExecutable = 0 
+
+    ' A constant that specifies the flag in RegisterTaskDefinition.
+    const FlagTaskCreate = 2 
+
+    ' A constant that specifies an executable action.
+    const LogonTypeInteractive = 3 
+
+    '********************************************************
+    ' Create the TaskService object.
+    '********************************************************
+    Set service = CreateObject("Schedule.Service")
+    call service.Connect()
+    strTaskName = "Launch App As Interactive User"
+
+    '********************************************************
+    ' Get a folder to create a task definition in. 
+    '********************************************************
+    Dim rootFolder
+    Set rootFolder = service.GetFolder("\")
+
+    'Delete the task if already present
+    On Error Resume Next
+    call rootFolder.DeleteTask(strTaskName, 0)
+    Err.Clear
+
+    '********************************************************
+    ' Create the new task
+    '********************************************************
+    Dim taskDefinition
+    Set taskDefinition = service.NewTask(0) 
+
+    '********************************************************
+    ' Create a registration trigger.
+    '********************************************************
+    Dim triggers
+    Set triggers = taskDefinition.Triggers
+
+    Dim trigger
+    Set trigger = triggers.Create(TriggerTypeRegistration) 
+
+    '***********************************************************
+    ' Create the action for the task to execute.
+    '***********************************************************
+    ' Add an action to the task. The action executes the app.
+    Dim Action
+    Set Action = taskDefinition.Actions.Create( ActionTypeExecutable )
+    Action.Path = strAppPath
+    WScript.Echo "Task definition created. About to submit the task..."
+
+    '***********************************************************
+    ' Register (create) the task.
+    '***********************************************************
+    call rootFolder.RegisterTaskDefinition(strTaskName, taskDefinition, FlagTaskCreate, ,, LogonTypeInteractive)
+    WScript.Echo "Task submitted."
+
+End Sub
+
+
+Sub LaunchDirectly(strAppPath)
+
+    '***********************************************************
+    ' Running as standard user or on legacy OS. Directly launch app.
+    '***********************************************************
+    ' intWindowStyle for WshShell.Run
+    Const WINDOW_STYLE_HIDE = 0
+    Const WINDOW_STYLE_ACTIVATE_DISPLAY = 1
+    Const WINDOW_STYLE_ACTIVATE_MINIMIZE = 2
+    Const WINDOW_STYLE_ACTIVATE_MAXIMIZE = 3
+    Const WINDOW_STYLE_RECENT = 4
+    Const WINDOW_STYLE_ACTIVATE_CURRENT = 5
+    Const WINDOW_STYLE_MINIMIZE_ACTIVATE_NEXT = 6
+    Const WINDOW_STYLE_MINIMIZE = 7
+    Const WINDOW_STYLE_CURRENT = 8
+    Const WINDOW_STYLE_ACTIVATE_RESTORE = 9
+    Const WINDOW_STYLE_FROM_PARENT = 10
+
+    Set oShell = WScript.CreateObject("WScript.Shell")
+    Return = oShell.Run(strAppPath, WINDOW_STYLE_ACTIVATE_DISPLAY, true)
+
+End Sub
+
+
+'***********************************************************
+' Function to detect whether script in running elevated.
+'***********************************************************
+Function IsElevated()
+
+    IsElevated = False
+
+    Dim oShell, oExec, szStdOut
+    szStdOut = "" 
+    Set oShell = CreateObject("WScript.Shell")
+    Set oExec = oShell.Exec("whoami /groups")
+
+    Do While (oExec.Status = cnWshRunning) 
+        WScript.Sleep 100
+        if not oExec.StdOut.AtEndOfStream then
+            szStdOut = szStdOut & oExec.StdOut.ReadAll
+        end if
+    Loop
+
+    select case oExec.ExitCode
+        case 0
+            if not oExec.StdOut.AtEndOfStream then
+                szStdOut = szStdOut & oExec.StdOut.ReadAll                   
+            end if
+
+            if instr(szStdOut,"S-1-16-12288") Then 
+                'wscript.echo "Elevated"
+                IsElevated = True
+            else
+                if instr(szStdOut,"S-1-16-8192")  Then 
+                    'wscript.echo "Not Elevated"
+                else
+                    'wscript.echo "Unknown!"
+                end if
+            end if
+
+        case else
+            if not oExec.StdErr.AtEndOfStream then 
+                'wscript.echo oExec.StdErr.ReadAll
+            end if
+    end select
+
+End Function
+
+
+'***********************************************************
+' Function to retreive a WMI property value.
+'***********************************************************
+Function GetWmiPropertyValue(strNameSpace, strClassName, strPropertyName)
+
+    On Error Resume Next
+
+    strPropertyValue = ""
+    
+    set oWmiClass = getobject("winmgmts:" & strNameSpace).get(strClassName,&h20000) 'amended
+    set oWmiProperties = oWmiClass.Properties_
+
+    Set objWMIService = GetObject("winmgmts:\\" & "." & "\" & strNameSpace)
+    Set colItems = objWMIService.ExecQuery("Select * from " & strClassName,,48)
+
+    For Each objItem in colItems
+        For Each objProperty in oWmiProperties
+            sLine = ""
+            'WScript.Echo "- " & objProperty.name & ": " & strPropertyName
+
+            If objProperty.Name = strPropertyName Then
+                If objProperty.IsArray = True Then
+                    sLine = "str" & objProperty.Name & " = Join(objItem." & objProperty.Name & ", " & Chr(34) & "," & Chr(34) & ")" & vbCrLf
+                    sLine = sLine & "strPropertyValue =  str" & objProperty.Name
+                ElseIf objProperty.CIMTYPE = 101 Then
+                    bHasDates = True
+                    sLine =  "strPropertyValue =  WMIDateStringToDate(objItem." & objProperty.Name & ")"
+                Else
+                    sLine =  "strPropertyValue =  objItem." & objProperty.Name
+                End If
+
+                'WScript.Echo sLine
+                Execute sLine
+            End If
+
+        Next
+    Next
+
+    GetWmiPropertyValue = strPropertyValue
+
+End Function
+
+
+'***********************************************************
+' Function to convert a WMI date to a VBScript date.
+'***********************************************************
+Function WMIDateStringToDate(dtmDate)
+    'WScript.Echo dtm: 
+    WMIDateStringToDate = CDate(Mid(dtmDate, 5, 2) & "/" & _
+        Mid(dtmDate, 7, 2) & "/" & Left(dtmDate, 4) _
+        & " " & Mid (dtmDate, 9, 2) & ":" & Mid(dtmDate, 11, 2) & ":" & Mid(dtmDate,13, 2))
+End Function
+
+
+</script>
+
+</job>
