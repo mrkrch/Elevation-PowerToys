@@ -1,0 +1,76 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
+; //
+; // "Elevate AutoHotkey Script" PowerToy for Windows Vista
+; //
+; // File:      ElevateAutoHotkey.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
+; // Purpose:   To add a "Run as Administrator" entry to the Explorer context 
+; //            menu for AutoHotkey scripts
+; //
+; // Version:   1.0.0
+; // Date :     04/29/2008
+; //
+; // History:
+; // 1.0.0   04/29/2008  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[ElevateAutoHotkeyInstall]
+CopyFiles = ElevateAutoHotkey.Files.Inf
+CopyFiles = ElevateAutoHotkey.Files.Icon
+AddReg    = ElevateAutoHotkey.AddReg
+
+[DefaultInstall]
+CopyFiles = ElevateAutoHotkey.Files.Inf
+CopyFiles = ElevateAutoHotkey.Files.Icon
+AddReg    = ElevateAutoHotkey.AddReg
+
+[DefaultUnInstall]
+DelFiles = ElevateAutoHotkey.Files.Inf
+DelReg   = ElevateAutoHotkey.DelReg
+
+[SourceDisksNames]
+55="Elevate AutoHotkey Script","",1
+
+[SourceDisksFiles]
+ElevateAutoHotkey.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+ElevateAutoHotkey.Files.Inf = 17
+ElevateAutoHotkey.Files.Icon = 11
+
+[ElevateAutoHotkey.Files.Inf]
+ElevateAutoHotkey.INF
+
+[ElevateAutoHotkey.Files.Icon]
+ElevationPowertoys.ico
+
+[ElevateAutoHotkey.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateAutoHotkey.inf"
+
+HKCR,AutoHotkeyScript\shell\runas
+HKCR,AutoHotkeyScript\shell\runas\command,,,"""%16422%\AutoHotkey\AutoHotkey.exe"" ""%1"" %*"
+
+[ElevateAutoHotkey.DelReg]
+HKLM,%UDHERE%
+HKCR,AutoHotkeyScript\shell\runas
+
+[Strings]
+DisplayName="Elevate AutoHotkey Script PowerToy for Windows Vista v1.0.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateAutoHotkey"

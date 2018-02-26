@@ -1,0 +1,88 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
+; //
+; // "Elevate Perl Script" PowerToy for Windows Vista
+; //
+; // File:      ElevatePerlScript.inf
+; //
+; // Additional files required:  Elevate.cmd, Elevate.vbs, ElevationPowertoys.ico
+; //
+; // Purpose:   To add a Run as Administrator entry and a Run as Administrator 
+; //            with Command Prompt entry to the Explorer context menu for
+; //            ActiveState Perl scripts
+; //
+; // Version:   1.0.0
+; // Date :     04/29/2008
+; //
+; // History:
+; // 1.0.0   04/29/2008  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[ElevatePerlScriptInstall]
+CopyFiles = ElevatePerlScript.Files.Inf
+CopyFiles = ElevatePerlScript.Files.Icon
+AddReg    = ElevatePerlScript.AddReg
+
+[DefaultInstall]
+CopyFiles = ElevatePerlScript.Files.Inf
+CopyFiles = ElevatePerlScript.Files.Icon
+AddReg    = ElevatePerlScript.AddReg
+
+[DefaultUnInstall]
+DelFiles = ElevatePerlScript.Files.Inf
+DelReg   = ElevatePerlScript.DelReg
+
+[SourceDisksNames]
+55="Elevate Perl Script","",1
+
+[SourceDisksFiles]
+ElevatePerlScript.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+ElevatePerlScript.Files.Inf = 17
+ElevatePerlScript.Files.Icon = 11
+
+[ElevatePerlScript.Files.Inf]
+ElevatePerlScript.INF
+
+[ElevatePerlScript.Files.Icon]
+ElevationPowertoys.ico
+
+[ElevatePerlScript.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevatePerlScript.inf"
+
+;Perl Files (.pl)
+HKCR,Perl\shell\runas,,,"%ElevatePerlScriptAccel%"
+HKCR,Perl\shell\runas\command,,0x00020000,"""%SystemDrive%\Perl\bin\perl.exe"" ""%1"" %*"
+
+;PerlScript Files (.pls)
+HKCR,PerlScriptFile\shell\runas,,,"%ElevatePerlScriptAccel%"
+HKCR,PerlScriptFile\shell\runas\command,,0x00020000,"""%SystemRoot%\System32\Wscript.exe"" ""%1"" %*"
+HKCR,PerlScriptFile\shell\runas With Cscript,,,"%ElevatePerlScriptAccelCscript%"
+HKCR,PerlScriptFile\shell\runas With Cscript\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%11%\Cscript.exe"" ""%1"" %*"
+
+[ElevatePerlScript.DelReg]
+HKLM,%UDHERE%
+HKCR,Perl\shell\runas
+HKCR,PerlScriptFile\shell\runas
+HKCR,PerlScriptFile\shell\runas With Cscript
+
+[Strings]
+DisplayName="Elevate Perl Script PowerToy for Windows Vista v1.0.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+ElevatePerlScriptAccel="Run as Administrator"
+ElevatePerlScriptAccelCscript="Run as Administrator with Command Prompt"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevatePerlScript"

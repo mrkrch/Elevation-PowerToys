@@ -1,0 +1,98 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
+; //
+; // "Run as Another User" PowerToy for Windows Vista
+; //
+; // File:      RunAs.inf
+; //
+; // Additional files required:  RunAs.hta, ElevationPowertoys.ico
+; //
+; // Additional requirement:     Elevate Command PowerToy must be installed
+; //
+; // Purpose:   To add a "Run as Another User" entry to the Explorer context 
+; //            menu for Executables (.exe) and Microsoft Management Console
+; //            files (.msc)
+; //
+; // Version:   1.0.0
+; // Date :     04/29/2008
+; //
+; // History:
+; // 1.0.0   04/29/2008  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[RunAsHTAInstall]
+CopyFiles = RunAsHTA.Files.Inf
+CopyFiles = RunAsHTA.Files.ProgramFiles
+CopyFiles = RunAsHTA.Files.Icon
+AddReg    = RunAsHTA.AddReg
+
+[DefaultInstall]
+CopyFiles = RunAsHTA.Files.Inf
+CopyFiles = RunAsHTA.Files.ProgramFiles
+CopyFiles = RunAsHTA.Files.Icon
+AddReg    = RunAsHTA.AddReg
+
+[DefaultUnInstall]
+DelFiles = RunAsHTA.Files.Inf
+DelFiles = RunAsHTA.Files.ProgramFiles
+DelReg   = RunAsHTA.DelReg
+AddReg   = RunAsHTA.Once.UnInst.Reg
+
+[SourceDisksNames]
+55="RunAs HTA","",1
+
+[SourceDisksFiles]
+RunAsHTA.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+RunAsHTA.Files.Inf = 17
+RunAsHTA.Files.ProgramFiles = 16422,%RunAsHTAFolder%
+RunAsHTA.Files.Icon = 11
+
+[RunAsHTA.Files.Inf]
+RunAs.inf
+
+[RunAsHTA.Files.ProgramFiles]
+RunAs.hta
+
+[RunAsHTA.Files.Icon]
+ElevationPowertoys.ico
+
+[RunAsHTA.Once.UnInst.Reg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup,RunAsHTA,,"%11%\cmd.exe /c rd ""%16422%\%RunAsHTAFolder%"""
+
+[RunAsHTA.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\RunAs.inf"
+
+HKCR,exefile\shell\RunAsHTA
+HKCR,exefile\Shell\RunAsHTA,,,"%RunAsHTAAccel%"
+HKCR,exefile\shell\RunAsHTA\command,,,"""%11%\mshta.exe"" ""%16422%\%RunAsHTAFolder%\RunAs.hta"" ""%L"""
+
+HKCR,mscfile\shell\RunAsHTA
+HKCR,mscfile\Shell\RunAsHTA,,,"%RunAsHTAAccel%"
+HKCR,mscfile\shell\RunAsHTA\command,,,"""%11%\mshta.exe"" ""%16422%\%RunAsHTAFolder%\RunAs.hta"" ""%L"""
+
+[RunAsHTA.DelReg]
+HKLM,%UDHERE%
+HKCR,exefile\shell\RunAsHTA
+HKCR,mscfile\shell\RunAsHTA
+
+[Strings]
+DisplayName="Run as Another User PowerToy for Windows Vista v1.0.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+RunAsHTAAccel="Run as Another User"
+RunAsHTAFolder="Run as Another User PowerToy"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\RunAsHTA"

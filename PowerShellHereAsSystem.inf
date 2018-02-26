@@ -1,0 +1,92 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
+; //
+; // "PowerShell Prompt Here as System" PowerToy for Windows PowerShell 1.0
+; //
+; // File:      PowerShellHereAsSystem.inf
+; //
+; // Additional files required:  PSAsSystem.cmd, ElevationPowertoys.ico
+; //
+; // Purpose:   To add a "PowerShell Prompt Here as System" entry to the Explorer
+; //            context menu for Windows PowerShell 1.0 on Windows Vista
+; //
+; // Additional requirement:  "Elevate Command" PowerToy for Windows Vista
+; //                          must be installed and Sysinternals Suite must
+; //                          be installed in %ProgramFiles%\Sysinternals Suite
+; //
+; // Version:   1.0.0
+; // Date :     04/29/2008
+; //
+; // History:
+; // 1.0.0   04/29/2008  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[PowerShellHereAsSystemInstall]
+CopyFiles = PowerShellHereAsSystem.Files.Inf
+CopyFiles = PowerShellHereAsSystem.Files.System
+CopyFiles = PowerShellHereAsSystem.Files.Icon
+AddReg    = PowerShellHereAsSystem.AddReg
+
+[DefaultInstall]
+CopyFiles = PowerShellHereAsSystem.Files.Inf
+CopyFiles = PowerShellHereAsSystem.Files.System
+CopyFiles = PowerShellHereAsSystem.Files.Icon
+AddReg    = PowerShellHereAsSystem.AddReg
+
+[DefaultUnInstall]
+DelFiles  = PowerShellHereAsSystem.Files.Inf
+DelFiles  = PowerShellHereAsSystem.Files.System
+DelReg    = PowerShellHereAsSystem.DelReg
+
+[SourceDisksNames]
+55="PowerShell Prompt Here as System","",1
+
+[SourceDisksFiles]
+PowerShellHereAsSystem.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+PowerShellHereAsSystem.Files.Inf = 17
+PowerShellHereAsSystem.Files.System = 11
+PowerShellHereAsSystem.Files.Icon = 11
+
+[PowerShellHereAsSystem.Files.Inf]
+PowerShellHereAsSystem.INF
+
+[PowerShellHereAsSystem.Files.System]
+PSAsSystem.cmd
+
+[PowerShellHereAsSystem.Files.Icon]
+ElevationPowertoys.ico
+
+[PowerShellHereAsSystem.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\PowerShellHereAsSystem.inf"
+
+HKCR,Directory\Shell\PowerShellHereAsSystem,,,"%PowerShellHereAsSystemAccel%"
+HKCR,Directory\Shell\PowerShellHereAsSystem\command,,,"Elevate.cmd ""%16422%\Sysinternals Suite\psexec.exe"" -i -s -d ""%11%\windowspowershell\v1.0\powershell.exe"" -NoExit Set-Location -LiteralPath '%L'; $host.ui.rawui.windowtitle = 'Windows PowerShell as SYSTEM - %L'; $host.ui.rawui.ForegroundColor = 'Red'; $host.ui.rawui.BackgroundColor = 'Yellow'; Clear-Host"
+HKCR,Drive\Shell\PowerShellHereAsSystem,,,"%PowerShellHereAsSystemAccel%"
+HKCR,Drive\Shell\PowerShellHereAsSystem\command,,,"Elevate.cmd ""%16422%\Sysinternals Suite\psexec.exe"" -i -s -d ""%11%\windowspowershell\v1.0\powershell.exe"" -NoExit Set-Location -LiteralPath '%L'; $host.ui.rawui.windowtitle = 'Windows PowerShell as SYSTEM - %L'; $host.ui.rawui.ForegroundColor = 'Red'; $host.ui.rawui.BackgroundColor = 'Yellow'; Clear-Host"
+
+[PowerShellHereAsSystem.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\PowerShellHereAsSystem
+HKCR,Drive\Shell\PowerShellHereAsSystem
+
+[Strings]
+DisplayName="PowerShell Prompt Here as System PowerToy for Windows PowerShell 1.0 on Windows Vista v.1.0.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+PowerShellHereAsSystemAccel="PowerShell Prompt Here as System"
+TitleText = "Windows PowerShell as SYSTEM"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\PowerShellHereAsSystem"

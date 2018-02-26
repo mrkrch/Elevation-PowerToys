@@ -1,0 +1,76 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
+; //
+; // "Elevate AutoIt v3 Script" PowerToy for Windows Vista
+; //
+; // File:      ElevateAutoIt3.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
+; // Purpose:   To add a "Run as Administrator" entry to the Explorer context 
+; //            menu for AutoIt v3 scripts
+; //
+; // Version:   1.0.0
+; // Date :     04/29/2008
+; //
+; // History:
+; // 1.0.0   04/29/2008  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[ElevateAutoIt3Install]
+CopyFiles = ElevateAutoIt3.Files.Inf
+CopyFiles = ElevateAutoIt3.Files.Icon
+AddReg    = ElevateAutoIt3.AddReg
+
+[DefaultInstall]
+CopyFiles = ElevateAutoIt3.Files.Inf
+CopyFiles = ElevateAutoIt3.Files.Icon
+AddReg    = ElevateAutoIt3.AddReg
+
+[DefaultUnInstall]
+DelFiles = ElevateAutoIt3.Files.Inf
+DelReg   = ElevateAutoIt3.DelReg
+
+[SourceDisksNames]
+55="Elevate AutoIt v3 Script","",1
+
+[SourceDisksFiles]
+ElevateAutoIt3.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+ElevateAutoIt3.Files.Inf = 17
+ElevateAutoIt3.Files.Icon = 11
+
+[ElevateAutoIt3.Files.Inf]
+ElevateAutoIt3.INF
+
+[ElevateAutoIt3.Files.Icon]
+ElevationPowertoys.ico
+
+[ElevateAutoIt3.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateAutoIt3.inf"
+
+HKCR,AutoIt3Script\shell\runas
+HKCR,AutoIt3Script\shell\runas\command,,,"""%16422%\AutoIt3\AutoIt3.exe"" ""%1"" %*"
+
+[ElevateAutoIt3.DelReg]
+HKLM,%UDHERE%
+HKCR,AutoIt3Script\shell\runas
+
+[Strings]
+DisplayName="Elevate AutoIt v3 Script PowerToy for Windows Vista v1.0.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateAutoIt3"

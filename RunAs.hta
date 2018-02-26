@@ -1,0 +1,206 @@
+<html>
+<!--
+//***************************************************************************
+// ***** Script Header *****
+// =======================================================
+// Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+// =======================================================
+//
+// "Run as Another User" PowerToy for Windows Vista
+//
+// File:      RunAs.hta
+//
+// Additional files required:  RunAs.inf
+//
+// Additional requirement:     Elevate Command PowerToy must be installed
+//
+// Purpose:   To add a "Run as Another User" entry to the Explorer context 
+//            menu for Executables (.exe) and Microsoft Management Console
+//            files (.msc)
+//
+// Version:   1.0.0
+// Date :     04/29/2008
+//
+// History:
+// 1.0.0   04/29/2008  Created initial version.
+//
+// ***** End Header *****
+//***************************************************************************
+-->
+<head>
+<meta http-equiv="Content-Language" content="en-us">
+<meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+<title>Run as Another User</title>
+<HTA:APPLICATION
+    ID="RunAsHta" 
+    APPLICATIONNAME="Run as Another User Tool" 
+    BORDER="thin"
+    CAPTION="yes"
+    SHOWINTASKBAR="yes"
+    SINGLEINSTANCE="yes"
+    SYSMENU="yes"
+    WINDOWSTATE="normal" />
+</head>
+
+<style>
+body
+{background-color:#e8e8e8; font-family:Arial; font-size: 10pt;}
+.tbox
+{font-family:Arial; font-size:10pt;}
+.button
+{font-family:Arial; font-size:10pt; width:100px;}
+.table
+{font-family:Arial; font-size:10pt;}
+.password
+{font-family:Arial; font-size:10pt;}
+#update
+{font-family:Arial; font-size:10pt; color="blue"}
+</style>
+
+<body onload="Initialize();">
+
+<script language="vbscript">
+
+g_strDblQuote = chr(34)
+	
+Set g_objShell = CreateObject("Shell.Application")
+Set g_objWshShell = CreateObject("Wscript.Shell")
+Set g_objWshNetwork = CreateObject("Wscript.Network")
+Set g_objFSO = CreateObject("Scripting.FileSystemObject")
+
+g_strHTAPath = window.location.pathname
+g_strHTAFolder = g_objFSO.GetParentFolderName(g_strHTAPath)
+g_strCommandLine = RunAsHta.commandLine
+g_strCommandToRun = Replace(g_strCommandLine, g_strDblQuote & g_strHTAPath & g_strDblQuote & " ", "")
+g_strCommandToRun = Replace(g_strCommandToRun, g_strDblQuote, "")
+
+g_strWindir = g_objWshShell.ExpandEnvironmentStrings("%windir%")
+g_strProgramFiles = g_objWshShell.ExpandEnvironmentStrings("%ProgramFiles%")
+g_strSystemRoot = g_objWshShell.ExpandEnvironmentStrings("%SystemRoot%")
+g_strComputer = g_objWshNetwork.ComputerName
+
+
+Sub Initialize	
+
+	' Resize me
+	window.resizeTo 500,350
+	
+    textCommandLine.innerHTML = "<font size=""1"">" & g_strCommandToRun & "</font>"
+    'textHtaPath.innerHTML = "<font size=""1"">" & g_strHTAPath & "</font>"
+
+End Sub
+
+
+Sub RunAs(blnElevated)
+
+    strUser = txtUserID.Value
+    strDomain = txtUserDomain.Value
+    strNoProfile = ""
+    strSmartcard = ""
+
+    If strUser = "" or strDomain = "" Then
+        MsgBox "One or more values are blank.  Please fill in all text boxes."
+        Exit Sub
+    End If
+
+    'If LCase(g_objFSO.GetExtensionName(g_strCommandToRun)) = "msc" Then
+    '    strCmdLine = g_strSystemRoot & "\system32\mmc.exe" & " " & "\" & g_strDblQuote & g_strCommandToRun & "\" & g_strDblQuote
+    '    strCmdLineElevated = "\" & g_strDblQuote & g_strSystemRoot & "\system32\mmc.exe" & "\" & g_strDblQuote & " " & "\" & g_strDblQuote & g_strCommandToRun & "\" & g_strDblQuote
+    'Else
+        strCmdLine = g_strCommandToRun
+        strCmdLineElevated = "\" & g_strDblQuote & g_strCommandToRun & "\" & g_strDblQuote
+    'End If 
+    
+    If blnElevated Then
+        strProgramAndArgs = g_strDblQuote & g_strSystemRoot & "\system32\elevate.cmd" & _
+                            " " & strCmdLineElevated & g_strDblQuote
+    Else
+        strProgramAndArgs = g_strDblQuote & strCmdLine & g_strDblQuote
+    End If
+
+    If chkNoProfile.checked Then strNoProfile = " /noprofile"
+
+    If chkSmartcard.checked Then strSmartcard = " /smartcard"
+    
+    strCmd = "runas" & strNoProfile & strSmartcard & " /user:" & strDomain & "\" & strUser & " " & strProgramAndArgs
+    'MsgBox strCmd
+    rc = g_objWshShell.Run(strCmd, 1, true)
+    window.close()
+
+End Sub
+
+
+Sub ToggleLocalAcct(blnIsChecked)
+
+    If blnIsChecked Then
+        txtUserDomain.disabled = True
+        txtUserDomain.value = g_strComputer
+        txtUserDomain.style.backgroundColor = "lightgrey"
+    Else
+        txtUserDomain.disabled = False
+        txtUserDomain.value = ""
+        txtUserDomain.style.backgroundColor = "white"
+    End If
+
+End Sub
+
+
+</script>
+
+<table border="0" cellpadding="0" cellspacing="0" width="100%" align=left>
+<tr>
+<td>
+<h3>Run as Another User</h3>
+</td>
+</tr>
+<tr>
+<td>
+<hr>
+
+<table>
+<tr>
+    <td>User ID:</td>
+    <td><input id=txtUserID class="tbox" type="text" size="30" style="width:200px"></td>
+</tr>
+<tr>
+    <td>Domain:</td>
+    <td><input id=txtUserDomain class="tbox" type="text" size="30" style="width:200px"></td>
+</tr>
+<tr>
+    <td>Command:</td>
+    <td id=textCommandLine></td>
+</tr>
+<!--
+<tr>
+<td>HTA Path:</td>
+<td id=textHtaPath></td>
+</tr>
+-->
+</table>
+
+<hr>
+Options:
+<table>
+<tr>
+    <td><input class="button" type="checkbox" name="chkLocalAcct" onclick="ToggleLocalAcct(chkLocalAcct.checked);"/></td>
+    <td>Use Local Account</td>
+</tr>
+<tr>
+    <td><input class="button" type="checkbox" name="chkSmartcard"/></td>
+    <td>Use Smartcard credentials</td>
+</tr>
+<tr>
+    <td><input class="button" type="checkbox" name="chkNoProfile"/></td>
+    <td>Do not load user profile</td>
+</tr>
+</table>
+
+<br>
+<input id=btnRunAs type=button style="width:100px" onclick="RunAs(0);" value="Run">
+<input id=btnRunAsAdmin type=button style="width:100px" onclick="RunAs(-1);" value="Run as Admin">
+</td>
+</tr>
+</table>
+
+</body>
+</html>

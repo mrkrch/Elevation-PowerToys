@@ -1,27 +1,31 @@
 ; //***************************************************************************
 ; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
 ; //
-; // "PowerShell Here" PowerToy for Windows PowerShell v1.0
+; // "PowerShell Here" PowerToy for Windows PowerShell 1.0
 ; //
 ; // File:      PowerShellHere.inf
 ; //
 ; // Purpose:   To add a PowerShell Prompt Here entry to the Explorer context 
-; //            menu for Windows PowerShell v1.0
+; //            menu for Windows PowerShell 1.0
 ; //
-; // Version:   1.0.1
-; // Date :     01/02/2007
+; // Version:   1.0.2
+; // Date :     04/29/2008
 ; //
 ; // History:
 ; // 1.0.0   11/20/2006  Created initial version.
 ; // 1.0.1   01/02/2007  Simplified path to powershell.exe (changed 
 ; //                     %10\system32 to %11).  Added header.
+; // 1.0.2   04/29/2008  Added DisplayVersion and changed DisplayName.
 ; //
 ; // ***** End Header *****
 ; //***************************************************************************
 
 
 [version]
-signature="$CHICAGO$"
+Signature="$Windows NT$"
 
 [PowerShellHereInstall]
 CopyFiles = PowerShellHere.Files.Inf
@@ -48,8 +52,11 @@ PowerShellHere.Files.Inf = 17
 PowerShellHere.INF
 
 [PowerShellHere.AddReg]
-HKLM,%UDHERE%,DisplayName,,"%PowerShellHereName%"
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
 HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\PowerShellHere.inf"
+
 HKCR,Directory\Shell\PowerShellHere,,,"%PowerShellHereAccel%"
 HKCR,Directory\Shell\PowerShellHere\command,,,"""%11%\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'"
 HKCR,Drive\Shell\PowerShellHere,,,"%PowerShellHereAccel%"
@@ -61,6 +68,7 @@ HKCR,Directory\Shell\PowerShellHere
 HKCR,Drive\Shell\PowerShellHere
 
 [Strings]
-PowerShellHereName="PowerShell Prompt Here PowerToy for Windows PowerShell v1.0 (Remove only)"
+DisplayName="PowerShell Prompt Here PowerToy for Windows PowerShell 1.0 (v1.0.2) (Uninstall only)"
+DisplayVersion="1.0.2"
 PowerShellHereAccel="PowerShell Prompt Here"
 UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\PowerShellHere"

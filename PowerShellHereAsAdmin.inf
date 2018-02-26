@@ -1,74 +1,88 @@
 ; //***************************************************************************
 ; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
 ; //
-; // "PowerShell Prompt Here as Administrator" PowerToy for Windows PowerShell v1.0
+; // "PowerShell Prompt Here as Administrator" PowerToy for Windows PowerShell 1.0
 ; //
 ; // File:      PowerShellHereAsAdmin.inf
 ; //
+; // Additional files required:  PSAsAdmin.cmd, ElevationPowertoys.ico
+; //
 ; // Purpose:   To add a "PowerShell Prompt Here as Administrator" entry to the
-; //            Explorer context menu for Windows PowerShell v1.0 on Windows
+; //            Explorer context menu for Windows PowerShell 1.0 on Windows
 ; //            Vista
 ; //
-; // Additional files required:  Elevate.cmd, Elevate.vbs
+; // Additional requirement:  "Elevate Command" PowerToy for Windows Vista
+; //                          must be installed.
 ; //
-; // Version:   1.0.0
-; // Date :     01/15/2007
+; // Version:   1.0.1
+; // Date :     04/29/2008
 ; //
 ; // History:
 ; // 1.0.0   01/15/2007  Created initial version.
+; // 1.0.1   04/29/2008  Removed install of Elevate.cmd & Elevate.vbs to 
+; //                     Program Files\Elevate WSH Script PowerToy.  Changed
+; //                     Regsitry values to REG_EXPAND_SZ.  Added
+; //                     DisplayVersion, DisplayIcon, and version number to
+; //                     DisplayName. Added installation of PSAsAdmin.cmd.
 ; //
 ; // ***** End Header *****
 ; //***************************************************************************
 
 
 [version]
-signature="$CHICAGO$"
+Signature="$Windows NT$"
 
 [PowerShellHereAsAdminInstall]
 CopyFiles = PowerShellHereAsAdmin.Files.Inf
-CopyFiles = PowerShellHereAsAdmin.Files.ProgramFiles
+CopyFiles = PowerShellHereAsAdmin.Files.System
+CopyFiles = PowerShellHereAsAdmin.Files.Icon
 AddReg    = PowerShellHereAsAdmin.AddReg
 
 [DefaultInstall]
 CopyFiles = PowerShellHereAsAdmin.Files.Inf
-CopyFiles = PowerShellHereAsAdmin.Files.ProgramFiles
+CopyFiles = PowerShellHereAsAdmin.Files.System
+CopyFiles = PowerShellHereAsAdmin.Files.Icon
 AddReg    = PowerShellHereAsAdmin.AddReg
 
 [DefaultUnInstall]
 DelFiles  = PowerShellHereAsAdmin.Files.Inf
-DelFiles  = PowerShellHereAsAdmin.Files.ProgramFiles
+DelFiles  = PowerShellHereAsAdmin.Files.System
 DelReg    = PowerShellHereAsAdmin.DelReg
-AddReg    = PowerShellHereAsAdmin.Once.UnInst.Reg
 
 [SourceDisksNames]
 55="PowerShell Prompt Here as Administrator","",1
 
 [SourceDisksFiles]
 PowerShellHereAsAdmin.INF=55
-Elevate.cmd=55
-Elevate.vbs=55
+ElevationPowertoys.ico=55
 
 [DestinationDirs]
 PowerShellHereAsAdmin.Files.Inf = 17
-PowerShellHereAsAdmin.Files.ProgramFiles = 24,Program Files\PowerShell Prompt Here as Administrator PowerToy
+PowerShellHereAsAdmin.Files.System = 11
+PowerShellHereAsAdmin.Files.Icon = 11
 
 [PowerShellHereAsAdmin.Files.Inf]
 PowerShellHereAsAdmin.INF
 
-[PowerShellHereAsAdmin.Files.ProgramFiles]
-Elevate.cmd
-Elevate.vbs
+[PowerShellHereAsAdmin.Files.System]
+PSAsAdmin.cmd
 
-[PowerShellHereAsAdmin.Once.UnInst.Reg]
-HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup,PowerShellHereAsAdmin,,"%11%\cmd.exe /c rd ""%24%\Program Files\PowerShell Prompt Here as Administrator PowerToy"""
+[PowerShellHereAsAdmin.Files.Icon]
+ElevationPowertoys.ico
 
 [PowerShellHereAsAdmin.AddReg]
-HKLM,%UDHERE%,DisplayName,,"%PowerShellHereAsAdminName%"
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
 HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\PowerShellHereAsAdmin.inf"
+
 HKCR,Directory\Shell\PowerShellHereAsAdmin,,,"%PowerShellHereAsAdminAccel%"
-HKCR,Directory\Shell\PowerShellHereAsAdmin\command,,,"""%24%\Program Files\PowerShell Prompt Here as Administrator PowerToy\Elevate.cmd"" ""%11%\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'; $host.ui.rawui.windowtitle = 'Administrator: ' + $host.ui.rawui.windowtitle"
+HKCR,Directory\Shell\PowerShellHereAsAdmin\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%SystemRoot%\System32\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'; $host.ui.rawui.windowtitle = 'Administrator: ' + $host.ui.rawui.windowtitle"
 HKCR,Drive\Shell\PowerShellHereAsAdmin,,,"%PowerShellHereAsAdminAccel%"
-HKCR,Drive\Shell\PowerShellHereAsAdmin\command,,,"""%24%\Program Files\PowerShell Prompt Here as Administrator PowerToy\Elevate.cmd"" ""%11%\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'; $host.ui.rawui.windowtitle = 'Administrator: ' + $host.ui.rawui.windowtitle"
+HKCR,Drive\Shell\PowerShellHereAsAdmin\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%SystemRoot%\System32\windowspowershell\v1.0\powershell.exe"" -NoExit -Command Set-Location -LiteralPath '%L'; $host.ui.rawui.windowtitle = 'Administrator: ' + $host.ui.rawui.windowtitle"
 
 [PowerShellHereAsAdmin.DelReg]
 HKLM,%UDHERE%
@@ -76,6 +90,7 @@ HKCR,Directory\Shell\PowerShellHereAsAdmin
 HKCR,Drive\Shell\PowerShellHereAsAdmin
 
 [Strings]
-PowerShellHereAsAdminName="PowerShell Prompt Here as Administrator PowerToy for Windows PowerShell v1.0 (Uninstall only)"
+DisplayName="PowerShell Prompt Here as Administrator PowerToy for Windows PowerShell 1.0 on Windows Vista v1.0.1 (Uninstall only)"
+DisplayVersion="1.0.1"
 PowerShellHereAsAdminAccel="PowerShell Prompt Here as Administrator"
 UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\PowerShellHereAsAdmin"

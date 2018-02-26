@@ -1,33 +1,44 @@
 ; //***************************************************************************
 ; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
 ; //
 ; // "Elevate Windows Installer Package" PowerToy for Windows Vista
 ; //
 ; // File:      ElevateMSI.inf
 ; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
 ; // Purpose:   To add an "Install as Administrator" entry to the Explorer context 
 ; //            menu for Windows Installer packages (.msi) and "Apply Patch as
 ; //            Administrator" for Windows Installer patches (.msp)
 ; //
-; // Version:   1.0.0
-; // Date :     03/01/2007
+; // Version:   1.0.1
+; // Date :     04/29/2008
 ; //
 ; // History:
 ; // 1.0.0   03/01/2007  Created initial version.
+; // 1.0.1   04/29/2008  Changed Regsitry values to REG_EXPAND_SZ and changed
+; //                     commands to better match the default open actions.
+; //                     Added DisplayVersion, DisplayIcon, and version number
+; //                     to DisplayName.
 ; //
 ; // ***** End Header *****
 ; //***************************************************************************
 
 
 [version]
-signature="$CHICAGO$"
+Signature="$Windows NT$"
 
 [ElevateMSIInstall]
 CopyFiles = ElevateMSI.Files.Inf
+CopyFiles = ElevateMSI.Files.Icon
 AddReg    = ElevateMSI.AddReg
 
 [DefaultInstall]
 CopyFiles = ElevateMSI.Files.Inf
+CopyFiles = ElevateMSI.Files.Icon
 AddReg    = ElevateMSI.AddReg
 
 [DefaultUnInstall]
@@ -39,24 +50,31 @@ DelReg   = ElevateMSI.DelReg
 
 [SourceDisksFiles]
 ElevateMSI.INF=55
+ElevationPowertoys.ico=55
 
 [DestinationDirs]
 ElevateMSI.Files.Inf = 17
+ElevateMSI.Files.Icon = 11
 
 [ElevateMSI.Files.Inf]
 ElevateMSI.INF
 
+[ElevateMSI.Files.Icon]
+ElevationPowertoys.ico
+
 [ElevateMSI.AddReg]
-HKLM,%UDHERE%,DisplayName,,"%ElevateMSIName%"
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
 HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateMSI.inf"
 
 HKCR,Msi.Package\shell\runas
 HKCR,Msi.Package\shell\runas,,,"%ElevateMSIAccel%"
-HKCR,Msi.Package\shell\runas\command,,,"""%11%\msiexec.exe"" /i ""%1"" %*"
+HKCR,Msi.Package\shell\runas\command,,0x00020000,"""%SystemRoot%\System32\msiexec.exe"" /i ""%1"" %*"
 
 HKCR,Msi.Patch\shell\runas
 HKCR,Msi.Patch\shell\runas,,,"%ElevateMSPAccel%"
-HKCR,Msi.Patch\shell\runas\command,,,"""%11%\msiexec.exe"" /p ""%1"" %*"
+HKCR,Msi.Patch\shell\runas\command,,0x00020000,"""%SystemRoot%\System32\msiexec.exe"" /p ""%1"" %*"
 
 [ElevateMSI.DelReg]
 HKLM,%UDHERE%
@@ -64,7 +82,8 @@ HKCR,Msi.Package\shell\runas
 HKCR,Msi.Patch\shell\runas
 
 [Strings]
-ElevateMSIName="Elevate Windows Installer Package PowerToy for Windows Vista (Uninstall only)"
+DisplayName="Elevate Windows Installer Package PowerToy for Windows Vista v1.0.1 (Uninstall only)"
+DisplayVersion="1.0.1"
 ElevateMSIAccel="Install as Administrator"
 ElevateMSPAccel="Apply Patch as Administrator"
 UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateMSI"

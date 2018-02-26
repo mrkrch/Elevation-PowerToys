@@ -1,5 +1,8 @@
 ; //***************************************************************************
 ; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
 ; //
 ; // "CMD Prompt Here" PowerToy (with fixed uninstall)
 ; //
@@ -7,8 +10,8 @@
 ; //
 ; // Purpose:   To add a CMD Prompt Here entry to the Explorer context menu
 ; //
-; // Version:   1.0.2
-; // Date :     02/19/2007
+; // Version:   1.0.3
+; // Date :     04/29/2008
 ; //
 ; // History:
 ; // 1.0.0   11/20/2006  Modified Windows Resource Kit version to fix the
@@ -17,12 +20,13 @@
 ; // 1.0.2   02/19/2007  Changed Registry Key name so that the command appears
 ; //                     next to the "CMD Prompt Here as Administrator"
 ; //                     PowerToy context menu entry.
+; // 1.0.3   04/29/2008  Added DisplayVersion, DisplayIcon, and changed DisplayName.
 ; //
 ; // ***** End Header *****
 ; //***************************************************************************
 
 [version]
-signature="$CHICAGO$"
+Signature="$Windows NT$"
 
 [CmdHereInstall]
 CopyFiles = CmdHere.Files.Inf
@@ -49,7 +53,9 @@ CmdHere.Files.Inf = 17
 CmdHere.INF
 
 [CmdHere.AddReg]
-HKLM,%UDHERE%,DisplayName,,"%CmdHereName%"
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
 HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\CmdHere.inf"
 HKCR,Directory\Shell\rCmdHere,,,"%CmdHereAccel%"
 HKCR,Directory\Shell\rCmdHere\command,,,"%11%\cmd.exe /k cd /d ""%1"""
@@ -63,6 +69,7 @@ HKCR,Drive\Shell\rCmdHere
 
 
 [Strings]
-CmdHereName="CMD Prompt Here PowerToy (Uninstall only)"
+DisplayName="CMD Prompt Here PowerToy v1.0.3 (Uninstall only)"
+DisplayVersion="1.0.3"
 CmdHereAccel="CMD &Prompt Here"
 UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\CmdHere"

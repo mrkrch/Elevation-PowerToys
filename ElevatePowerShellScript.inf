@@ -1,9 +1,14 @@
 ; //***************************************************************************
 ; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
 ; //
-; // "Elevate PowerShell Script" PowerToy for Windows Vista
+; // "Elevate PowerShell v1.0 Script" PowerToy for Windows Vista
 ; //
 ; // File:      ElevatePowerShellScript.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico
 ; //
 ; // Purpose:   To add a "Run as Administrator" entry to the Explorer context 
 ; //            menu for Windows PowerShell scripts.  Also adds a "Run" entry.
@@ -16,25 +21,31 @@
 ; //            "Open" in the ElevatePowerShellScript.AddReg and the
 ; //            ElevatePowerShellScript.DelReg sections.)
 ; //
-; // Version:   1.0.0
-; // Date :     01/02/2007
+; // Version:   1.0.1
+; // Date :     04/29/2008
 ; //
 ; // History:
 ; // 1.0.0   01/02/2007  Created initial version.
+; // 1.0.1   04/29/2008  Changed Regsitry values to REG_EXPAND_SZ and changed
+; //                     commands to better match the default open actions.
+; //                     Added DisplayVersion, DisplayIcon, and version number
+; //                     to DisplayName.
 ; //
 ; // ***** End Header *****
 ; //***************************************************************************
 
 
 [version]
-signature="$CHICAGO$"
+Signature="$Windows NT$"
 
 [ElevatePowerShellScriptInstall]
 CopyFiles = ElevatePowerShellScript.Files.Inf
+CopyFiles = ElevatePowerShellScript.Files.Icon
 AddReg    = ElevatePowerShellScript.AddReg
 
 [DefaultInstall]
 CopyFiles = ElevatePowerShellScript.Files.Inf
+CopyFiles = ElevatePowerShellScript.Files.Icon
 AddReg    = ElevatePowerShellScript.AddReg
 
 [DefaultUnInstall]
@@ -46,22 +57,29 @@ DelReg   = ElevatePowerShellScript.DelReg
 
 [SourceDisksFiles]
 ElevatePowerShellScript.INF=55
+ElevationPowertoys.ico=55
 
 [DestinationDirs]
 ElevatePowerShellScript.Files.Inf = 17
+ElevatePowerShellScript.Files.Icon = 11
 
 [ElevatePowerShellScript.Files.Inf]
 ElevatePowerShellScript.INF
 
+[ElevatePowerShellScript.Files.Icon]
+ElevationPowertoys.ico
+
 [ElevatePowerShellScript.AddReg]
-HKLM,%UDHERE%,DisplayName,,"%ElevatePowerShellScriptName%"
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
 HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevatePowerShellScript.inf"
 
 HKCR,Microsoft.PowerShellScript.1\Shell,,,"Open"
 HKCR,Microsoft.PowerShellScript.1\Shell\Run
-HKCR,Microsoft.PowerShellScript.1\Shell\Run\command,,,"""%11%\WindowsPowerShell\v1.0\powershell.exe"" -NoExit -Command & '%L'"
+HKCR,Microsoft.PowerShellScript.1\Shell\Run\command,,0x00020000,"""%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"" -NoExit -Command & '%L'"
 HKCR,Microsoft.PowerShellScript.1\Shell\runas
-HKCR,Microsoft.PowerShellScript.1\Shell\runas\command,,,"""%11%\WindowsPowerShell\v1.0\powershell.exe"" -NoExit -Command  & '%L'"
+HKCR,Microsoft.PowerShellScript.1\Shell\runas\command,,0x00020000,"""%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"" -NoExit -Command  & '%L'"
 
 [ElevatePowerShellScript.DelReg]
 HKLM,%UDHERE%
@@ -70,5 +88,6 @@ HKCR,Microsoft.PowerShellScript.1\Shell\Run
 HKCR,Microsoft.PowerShellScript.1\Shell\runas
 
 [Strings]
-ElevatePowerShellScriptName="Elevate PowerShell Script PowerToy for Windows Vista (Uninstall only)"
+DisplayName="Elevate PowerShell v1.0 Script PowerToy for Windows Vista v1.0.1 (Uninstall only)"
+DisplayVersion="1.0.1"
 UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevatePowerShellScript"

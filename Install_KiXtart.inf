@@ -1,0 +1,178 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
+; //
+; // KiXtart 2010 INF Installer
+; //
+; // File:      Install_KiXtart.inf
+; //
+; // Purpose:   Install Kixtart 2010 v4.60 
+; //
+; // Version:   1.0.0
+; // Date :     04/29/2008
+; //
+; // History:
+; // 1.0.0   04/29/2008  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+signature="$CHICAGO$"
+
+[KiXtartInstall]
+CopyFiles  = KiXtart.Files.Inf
+CopyFiles  = KiXtart.Files.ProgramFiles
+CopyFiles  = KiXtart.Files.ProgramFilesSamples
+AddReg     = KiXtart.AddReg
+UpdateInis = KiXtart.Links
+
+[DefaultInstall]
+CopyFiles  = KiXtart.Files.Inf
+CopyFiles  = KiXtart.Files.ProgramFiles
+CopyFiles  = KiXtart.Files.ProgramFilesSamples
+AddReg     = KiXtart.AddReg
+UpdateInis = KiXtart.Links
+
+[DefaultUnInstall]
+DelFiles   = KiXtart.Files.Inf
+DelFiles   = KiXtart.Files.ProgramFiles
+DelFiles   = KiXtart.Files.ProgramFilesSamples
+DelReg     = KiXtart.DelReg
+AddReg     = KiXtart.Once.UnInst.Reg
+UpdateInis = KiXtart.Links.Remove
+
+[SourceDisksNames]
+55="Elevate WSH Script","",1
+
+[SourceDisksFiles]
+Install_KiXtart.inf=55
+kix2010.doc=55
+kix2010.txt=55
+KIX32.EXE=55
+KiXtart.dll=55
+WKIX32.EXE=55
+adaams.spk=55,\Samples
+adsi01.kix=55,\Samples
+adsi02.kix=55,\Samples
+adsi03.kix=55,\Samples
+agent.kix=55,\Samples
+bouree.spk=55,\Samples
+cabaret.spk=55,\Samples
+chimes.wav=55,\Samples
+delkey.kix=55,\Samples
+demo.kix=55,\Samples
+Demo.xls=55,\Samples
+demo2.kix=55,\Samples
+enumdir.kix=55,\Samples
+enumkeys.kix=55,\Samples
+excel.kix=55,\Samples
+fly.kix=55,\Samples
+getdrvs.kix=55,\Samples
+getip.kix=55,\Samples
+jbond.spk=55,\Samples
+kick.kix=55,\Samples
+kixtart.kix=55,\Samples
+macros.vbs=55,\Samples
+plt.kix=55,\Samples
+recur.kix=55,\Samples
+runkix.vbs=55,\Samples
+test.kix=55,\Samples
+treksong.spk=55,\Samples
+
+[DestinationDirs]
+KiXtart.Files.Inf = 17
+KiXtart.Files.ProgramFiles = 16422,KiXtart
+KiXtart.Files.ProgramFilesSamples = 16422,KiXtart\Samples
+
+[KiXtart.Files.Inf]
+Install_KiXtart.inf
+
+[KiXtart.Files.ProgramFiles]
+kix2010.doc
+kix2010.txt
+KIX32.EXE
+KiXtart.dll
+WKIX32.EXE
+
+[KiXtart.Files.ProgramFilesSamples]
+adaams.spk
+adsi01.kix
+adsi02.kix
+adsi03.kix
+agent.kix
+bouree.spk
+cabaret.spk
+chimes.wav
+delkey.kix
+demo.kix
+Demo.xls
+demo2.kix
+enumdir.kix
+enumkeys.kix
+excel.kix
+fly.kix
+getdrvs.kix
+getip.kix
+jbond.spk
+kick.kix
+kixtart.kix
+macros.vbs
+plt.kix
+recur.kix
+runkix.vbs
+test.kix
+treksong.spk
+
+[KiXtart.Once.UnInst.Reg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup,KiXtart,,"%11%\cmd.exe /c rd /s /q ""%16422%\KiXtart"""
+
+[KiXtart.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\Install_KiXtart.inf"
+
+HKCR,.kix,,,"kixFile"
+HKCR,kixFile\shell,,,"Run"
+HKCR,kixFile\shell\Edit
+HKCR,kixFile\shell\Edit\command,,,"""%11%\notepad.exe"" ""%1"""
+HKCR,kixFile\shell\Run,,,"%KiXtartAccel%"
+HKCR,kixFile\shell\Run\command,,,"""%16422%\KiXtart\KIX32.EXE"" """%1""" %*"
+HKCR,kixFile\shell\Run without console,,,"%KiXtartAccelNoConsole%"
+HKCR,kixFile\shell\Run without console\command,,,"""%16422%\KiXtart\WKIX32.EXE"" """%1""" %*"
+
+[KiXtart.DelReg]
+HKLM,%UDHERE%
+HKCR,kixFile\shell,""
+HKCR,kixFile\shell\Edit
+HKCR,kixFile\shell\Run
+HKCR,kixFile\shell\Run without console
+
+[KiXtart.Links]
+setup.ini, progman.groups,,""group1="%16407%\%KiXtartGroup%\"""
+setup.ini, group1,,"""%KiXtartDoc%"",""""""%16422%\KiXtart\kix2010.doc"""""""
+setup.ini, group1,,"""%KiXtartReleaseNotes%"",""""""%16422%\KiXtart\kix2010.txt"""""""
+setup.ini, group1,,"""%KiXtartCmdPrompt%"",""""""%11%\cmd.exe"""" /k cd /d """"%16422%\KiXtart"""""",,,,""%16422%\KiXtart"",""%KiXtartCmdPrompt%"""
+setup.ini, group1,,"""%KiXtartSamples%"",""""""%16422%\KiXtart\Samples"""""""
+
+[KiXtart.Links.Remove]
+setup.ini, progman.groups,,""group1="%16407%\%KiXtartGroup%"""
+setup.ini, group1,,"""%KiXtartDoc%"""
+setup.ini, group1,,"""%KiXtartReleaseNotes%""
+setup.ini, group1,,"""%KiXtartCmdPrompt%""
+setup.ini, group1,,"""%KiXtartSamples%""
+
+[Strings]
+DisplayName="KiXtart 2010 v4.60 (Uninstall only)"
+DisplayVersion="4.60"
+KiXtartAccel="Run"
+KiXtartAccelNoConsole="Run without console"
+KiXtartGroup="KiXtart 2010"
+KiXtartDoc="KiXtart 2010 Documentation"
+KiXtartReleaseNotes="Realease Notes"
+KiXtartSamples="Samples"
+KiXtartCmdPrompt="KiXtart Command Prompt
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\KiXtart"

@@ -1,32 +1,41 @@
 ; //***************************************************************************
 ; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
 ; //
 ; // "Elevate HTML Application" PowerToy for Windows Vista
 ; //
 ; // File:      ElevateHTA.inf
 ; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
 ; // Purpose:   To add a "Run as Administrator" entry to the Explorer context 
 ; //            menu for HTML Applications
 ; //
-; // Version:   1.0.0
-; // Date :     01/02/2007
+; // Version:   1.0.1
+; // Date :     04/29/2008
 ; //
 ; // History:
 ; // 1.0.0   01/02/2007  Created initial version.
+; // 1.0.1   04/29/2008  Added DisplayVersion, DisplayIcon, and version number
+; //                     to DisplayName.
 ; //
 ; // ***** End Header *****
 ; //***************************************************************************
 
 
 [version]
-signature="$CHICAGO$"
+Signature="$Windows NT$"
 
 [ElevateHTAInstall]
 CopyFiles = ElevateHTA.Files.Inf
+CopyFiles = ElevateHTA.Files.Icon
 AddReg    = ElevateHTA.AddReg
 
 [DefaultInstall]
 CopyFiles = ElevateHTA.Files.Inf
+CopyFiles = ElevateHTA.Files.Icon
 AddReg    = ElevateHTA.AddReg
 
 [DefaultUnInstall]
@@ -38,24 +47,32 @@ DelReg   = ElevateHTA.DelReg
 
 [SourceDisksFiles]
 ElevateHTA.INF=55
+ElevationPowertoys.ico=55
 
 [DestinationDirs]
 ElevateHTA.Files.Inf = 17
+ElevateHTA.Files.Icon = 11
 
 [ElevateHTA.Files.Inf]
 ElevateHTA.INF
 
+[ElevateHTA.Files.Icon]
+ElevationPowertoys.ico
+
 [ElevateHTA.AddReg]
-HKLM,%UDHERE%,DisplayName,,"%ElevateHTAName%"
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
 HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateHTA.inf"
 
 HKCR,htafile\shell\runas
-HKCR,htafile\shell\runas\command,,,"""%11%\mshta.exe"" ""%L"""
+HKCR,htafile\shell\runas\command,,0x00020000,"""%SystemRoot%\System32\mshta.exe"" ""%1"" %*"
 
 [ElevateHTA.DelReg]
 HKLM,%UDHERE%
 HKCR,htafile\shell\runas
 
 [Strings]
-ElevateHTAName="Elevate HTML Application PowerToy for Windows Vista (Uninstall only)"
+DisplayName="Elevate HTML Application PowerToy for Windows Vista v1.0.2 (Uninstall only)"
+DisplayVersion="1.0.2"
 UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateHTA"

@@ -1,0 +1,91 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
+; //
+; // "CMD Prompt Here as System" PowerToy for Windows Vista
+; //
+; // File:      CmdHereAsSystem.inf
+; //
+; // Additional files required:  CmdAsSystem.cmd, ElevationPowertoys.ico
+; //
+; // Purpose:   To add a "Cmd Prompt Here as System" entry to the Explorer
+; //            context menu for Windows Vista
+; //
+; // Additional requirement:  "Elevate Command" PowerToy for Windows Vista
+; //                          must be installed and Sysinternals Suite must
+; //                          be installed in %ProgramFiles%\Sysinternals Suite
+; //
+; // Version:   1.0.0
+; // Date :     04/29/2008
+; //
+; // History:
+; // 1.0.0   04/29/2008  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[CmdHereAsSystemInstall]
+CopyFiles = CmdHereAsSystem.Files.Inf
+CopyFiles = CmdHereAsSystem.Files.System
+CopyFiles = CmdHereAsSystem.Files.Icon
+AddReg    = CmdHereAsSystem.AddReg
+
+[DefaultInstall]
+CopyFiles = CmdHereAsSystem.Files.Inf
+CopyFiles = CmdHereAsSystem.Files.System
+CopyFiles = CmdHereAsSystem.Files.Icon
+AddReg    = CmdHereAsSystem.AddReg
+
+[DefaultUnInstall]
+DelFiles  = CmdHereAsSystem.Files.Inf
+DelFiles  = CmdHereAsSystem.Files.System
+DelReg    = CmdHereAsSystem.DelReg
+
+[SourceDisksNames]
+55="CMD Prompt Here as System","",1
+
+[SourceDisksFiles]
+CmdHereAsSystem.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+CmdHereAsSystem.Files.Inf = 17
+CmdHereAsSystem.Files.System = 11
+CmdHereAsSystem.Files.Icon = 11
+
+[CmdHereAsSystem.Files.Inf]
+CmdHereAsSystem.INF
+
+[CmdHereAsSystem.Files.System]
+CmdAsSystem.cmd
+
+[CmdHereAsSystem.Files.Icon]
+ElevationPowertoys.ico
+
+[CmdHereAsSystem.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\CmdHereAsSystem.inf"
+HKCR,Directory\Shell\runCmdHereAsSystem,,,"%CmdHereAsSystemAccel%"
+HKCR,Directory\Shell\runCmdHereAsSystem\command,,,"Elevate.cmd ""%16422%\Sysinternals Suite\psexec.exe"" -i -s -d ""%11%\cmd.exe"" /k ""(cd /d ""%1"" & color ec & title ""%%TitleText%% - %1"")"""
+HKCR,Drive\Shell\runCmdHereAsSystem,,,"%CmdHereAsSystemAccel%"
+HKCR,Drive\Shell\runCmdHereAsSystem\command,,,"Elevate.cmd ""%16422%\Sysinternals Suite\psexec.exe"" -i -s -d ""%11%\cmd.exe"" /k ""(cd /d ""%1"" & color ec & title ""%%TitleText%% - %1"")"""
+
+[CmdHereAsSystem.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\runCmdHereAsSystem
+HKCR,Drive\Shell\runCmdHereAsSystem
+
+[Strings]
+DisplayName="CMD Prompt Here as System PowerToy for Windows Vista v1.0.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+CmdHereAsSystemAccel="CMD Prompt Here as System"
+TitleText = "CMD Prompt as SYSTEM"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\CmdHereAsSystem"

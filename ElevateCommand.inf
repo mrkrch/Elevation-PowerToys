@@ -1,37 +1,44 @@
 ; //***************************************************************************
 ; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
 ; //
 ; // "Elevate Command" PowerToy for Windows Vista
 ; //
 ; // File:      ElevateCommand.inf
 ; //
-; // Additional files required:  Elevate.cmd, Elevate.vbs
+; // Additional files required:  Elevate.cmd, Elevate.vbs, ElevationPowertoys.ico
 ; //
 ; // Purpose:   To add a command line method of launching applications that
 ; //            prompt for elevation (run as Administrator) to Windows
 ; //            Vista.
 ; //
-; // Version:   1.0.0
-; // Date :     01/02/2007
+; // Version:   1.0.1
+; // Date :     04/29/2008
 ; //
 ; // History:
 ; // 1.0.0   01/02/2007  Created initial version.
+; // 1.0.1   04/29/2008  Added DisplayVersion, DisplayIcon, and version number
+; //                     to DisplayName.
 ; //
 ; // ***** End Header *****
 ; //***************************************************************************
 
 
 [version]
-signature="$CHICAGO$"
+Signature="$Windows NT$"
 
 [ElevateCommandInstall]
 CopyFiles = ElevateCommand.Files.Inf
 CopyFiles = ElevateCommand.Files.System
+CopyFiles = ElevateCommand.Files.Icon
 AddReg    = ElevateCommand.AddReg
 
 [DefaultInstall]
 CopyFiles = ElevateCommand.Files.Inf
 CopyFiles = ElevateCommand.Files.System
+CopyFiles = ElevateCommand.Files.Icon
 AddReg    = ElevateCommand.AddReg
 
 [DefaultUnInstall]
@@ -46,10 +53,12 @@ DelReg   = ElevateCommand.DelReg
 ElevateCommand.INF=55
 Elevate.cmd=55
 Elevate.vbs=55
+ElevationPowertoys.ico=55
 
 [DestinationDirs]
 ElevateCommand.Files.Inf = 17
 ElevateCommand.Files.System = 11
+ElevateCommand.Files.Icon = 11
 
 [ElevateCommand.Files.Inf]
 ElevateCommand.INF
@@ -58,13 +67,19 @@ ElevateCommand.INF
 Elevate.cmd
 Elevate.vbs
 
+[ElevateCommand.Files.Icon]
+ElevationPowertoys.ico
+
 [ElevateCommand.AddReg]
-HKLM,%UDHERE%,DisplayName,,"%ElevateCommandName%"
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
 HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateCommand.inf"
 
 [ElevateCommand.DelReg]
 HKLM,%UDHERE%
 
 [Strings]
-ElevateCommandName="Elevate Command PowerToy for Windows Vista (Uninstall only)"
+DisplayName="Elevate Command PowerToy for Windows Vista v1.0.1 (Uninstall only)"
+DisplayVersion="1.0.1"
 UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateCommand"

@@ -1,0 +1,78 @@
+; //***************************************************************************
+; // ***** Script Header *****
+; // =======================================================
+; // Elevation PowerToys for Windows Vista v1.1 (04/29/2008)
+; // =======================================================
+; //
+; // "Elevate KiXtart Script" PowerToy for Windows Vista
+; //
+; // File:      ElevateKiXtart.inf
+; //
+; // Additional files required:  ElevationPowertoys.ico
+; //
+; // Purpose:   To add a "Run as Administrator" entry to the Explorer context 
+; //            menu for KiXtart scripts
+; //
+; // Additional requirement:  KiXtart must be installed in %ProgramFiles%\KiXtart
+; //
+; // Version:   1.0.0
+; // Date :     04/29/2008
+; //
+; // History:
+; // 1.0.0   04/29/2008  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+
+[version]
+Signature="$Windows NT$"
+
+[ElevateKiXtartInstall]
+CopyFiles = ElevateKiXtart.Files.Inf
+CopyFiles = ElevateKiXtart.Files.Icon
+AddReg    = ElevateKiXtart.AddReg
+
+[DefaultInstall]
+CopyFiles = ElevateKiXtart.Files.Inf
+CopyFiles = ElevateKiXtart.Files.Icon
+AddReg    = ElevateKiXtart.AddReg
+
+[DefaultUnInstall]
+DelFiles = ElevateKiXtart.Files.Inf
+DelReg   = ElevateKiXtart.DelReg
+
+[SourceDisksNames]
+55="Elevate KiXtart Script","",1
+
+[SourceDisksFiles]
+ElevateKiXtart.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+ElevateKiXtart.Files.Inf = 17
+ElevateKiXtart.Files.Icon = 11
+
+[ElevateKiXtart.Files.Inf]
+ElevateKiXtart.INF
+
+[ElevateKiXtart.Files.Icon]
+ElevationPowertoys.ico
+
+[ElevateKiXtart.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ElevateKiXtart.inf"
+
+HKCR,kixFile\shell\runas
+HKCR,kixFile\shell\runas\command,,,"""%16422%\KiXtart\KIX32.EXE"" """%1""" %*"
+
+[ElevateKiXtart.DelReg]
+HKLM,%UDHERE%
+HKCR,kixFile\shell\runas
+
+[Strings]
+DisplayName="Elevate KiXtart Script PowerToy for Windows Vista v.1.0.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ElevateKiXtart"
