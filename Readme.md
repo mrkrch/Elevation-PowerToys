@@ -27,5 +27,9 @@ Coming soon...
 
 - - -
 
+<<<<<<< HEAD
 Created by Michael Murgolo (Senior Infrastructure Consultant for Microsoft Consulting Services)
+=======
+Created by Michael Murgolo (Senior Infrastructure Consultant for Microsoft Consulting Services)  
+>>>>>>> 0367d54e87c4305732c370b5c5294c0b450f0126
 Based on work done by John Stephens (Microsoft Software Design Engineer)
