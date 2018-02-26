@@ -1,0 +1,111 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
+; //***************************************************************************
+; // ***** Script Header *****
+; //
+; // Explorer++ INF Installer
+; //
+; // File:      Explorer++.inf
+; //
+; // Additional files required (download from http://explorerplusplus.com/):  
+; //            Explorer++.exe
+; //            History.txt
+; //            Readme.txt
+; //
+; // Purpose:   Install Explorer++ files into %ProgramFiles%\Explorer++ 
+; //
+; // Version:   1.0.0
+; // Date :     11/20/2009
+; //
+; // History:
+; // 1.0.0   11/20/2009  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+[version]
+Signature="$Windows NT$"
+
+[Explorer++Install]
+CopyFiles = Explorer++.Files.Inf
+CopyFiles = Explorer++.Files.ProgramFiles
+AddReg    = Explorer++.AddReg
+UpdateInis = Explorer++.Links
+
+[DefaultInstall]
+CopyFiles = Explorer++.Files.Inf
+CopyFiles = Explorer++.Files.ProgramFiles
+AddReg    = Explorer++.AddReg
+UpdateInis = Explorer++.Links
+
+[DefaultUnInstall]
+DelFiles = Explorer++.Files.Inf
+DelFiles = Explorer++.Files.ProgramFiles
+DelReg   = Explorer++.DelReg
+AddReg   = Explorer++.Once.UnInst.Reg
+UpdateInis = Explorer++.Links.Remove
+
+[SourceDisksNames]
+55="Explorer++","",1 
+
+[SourceDisksFiles]
+Explorer++.exe=55
+Explorer++.inf=55
+History.txt=55
+Readme.txt=55
+
+[DestinationDirs]
+Explorer++.Files.Inf = 17
+Explorer++.Files.ProgramFiles = 16422,%ProgramFolder%
+
+[Explorer++.Files.Inf]
+Explorer++.inf
+
+[Explorer++.Files.ProgramFiles]
+Explorer++.exe
+History.txt
+Readme.txt
+
+[Explorer++.Once.UnInst.Reg]
+HKLM,Software\Microsoft\Windows\CurrentVersion\RunOnce\Setup,Explorer++,,"%11%\cmd.exe /c rd ""%16422%\%ProgramFolder%"""
+
+[Explorer++.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\Explorer++.inf"
+
+[Explorer++.DelReg]
+HKLM,%UDHERE%
+
+[Explorer++.Links]
+setup.ini, progman.groups,,""group1="%16407%\%ProgramFolder%"""
+setup.ini, group1,,"""%Shortcut%"",""""""%16422%\%ProgramFolder%\Explorer++.exe"""""""
+
+[Explorer++.Links.Remove]
+setup.ini, progman.groups,,""group1="%16407%\%ProgramFolder%"""
+setup.ini, group1,,"""%Shortcut%"""
+
+[Strings]
+DisplayName="Explorer++ (Uninstall only)"
+ProgramFolder="Explorer++"
+Shortcut="Explorer++"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\Explorer++"
+

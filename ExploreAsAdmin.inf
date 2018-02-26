@@ -1,0 +1,111 @@
+; #########################################################################################
+; #   MICROSOFT LEGAL STATEMENT FOR SAMPLE SCRIPTS/CODE
+; #########################################################################################
+; #   This Sample Code is provided for the purpose of illustration only and is not 
+; #   intended to be used in a production environment.
+; #
+; #   THIS SAMPLE CODE AND ANY RELATED INFORMATION ARE PROVIDED "AS IS" WITHOUT WARRANTY 
+; #   OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE IMPLIED 
+; #   WARRANTIES OF MERCHANTABILITY AND/OR FITNESS FOR A PARTICULAR PURPOSE.
+; #
+; #   We grant You a nonexclusive, royalty-free right to use and modify the Sample Code 
+; #   and to reproduce and distribute the object code form of the Sample Code, provided 
+; #   that You agree: 
+; #   (i)      to not use Our name, logo, or trademarks to market Your software product 
+; #            in which the Sample Code is embedded; 
+; #   (ii)     to include a valid copyright notice on Your software product in which 
+; #            the Sample Code is embedded; and 
+; #   (iii)    to indemnify, hold harmless, and defend Us and Our suppliers from and 
+; #            against any claims or lawsuits, including attorneys’ fees, that arise 
+; #            or result from the use or distribution of the Sample Code.
+; #########################################################################################
+; //***************************************************************************
+; // ***** Script Header *****
+; // ===============================
+; // Elevation PowerToys for Windows
+; // ===============================
+; //
+; // "Explore as Administrator" PowerToy for Windows
+; //
+; // Files:      ExploreAsAdmin.inf
+; //             ElevationPowertoys.ico
+; //
+; // Purpose:   To add an "Explore as Administrator" entry to the
+; //            Explorer context menu on Windows Vista and higher
+; //
+; // Additional requirements:  
+; //            - "Elevate Command" PowerToy must be installed.
+; //            - This version of the INF file is configured to use Explorer++
+; //              (download from http://explorerplusplus.com/) as the file
+; //              manager program to elevate.  To use another one, replace
+; //              both instances of the following path with the path to the 
+; //              desired executable:
+; //                  %ProgramFiles%\Explorer++\Explorer++.exe
+; //
+; // Version:   1.0.0
+; // Date :     11/20/2009
+; //
+; // History:
+; // 1.0.0   11/20/2009  Created initial version.
+; //
+; // ***** End Header *****
+; //***************************************************************************
+
+[version]
+Signature="$Windows NT$"
+
+[ExploreAsAdminInstall]
+CopyFiles = ExploreAsAdmin.Files.Inf
+CopyFiles = ExploreAsAdmin.Files.System
+CopyFiles = ExploreAsAdmin.Files.Icon
+AddReg    = ExploreAsAdmin.AddReg
+
+[DefaultInstall]
+CopyFiles = ExploreAsAdmin.Files.Inf
+CopyFiles = ExploreAsAdmin.Files.System
+CopyFiles = ExploreAsAdmin.Files.Icon
+AddReg    = ExploreAsAdmin.AddReg
+
+[DefaultUnInstall]
+DelFiles  = ExploreAsAdmin.Files.Inf
+DelFiles  = ExploreAsAdmin.Files.System
+DelReg    = ExploreAsAdmin.DelReg
+
+[SourceDisksNames]
+55="Explore as Administrator","",1
+
+[SourceDisksFiles]
+ExploreAsAdmin.INF=55
+ElevationPowertoys.ico=55
+
+[DestinationDirs]
+ExploreAsAdmin.Files.Inf = 17
+ExploreAsAdmin.Files.Icon = 11
+
+[ExploreAsAdmin.Files.Inf]
+ExploreAsAdmin.INF
+
+[ExploreAsAdmin.Files.Icon]
+ElevationPowertoys.ico
+
+[ExploreAsAdmin.AddReg]
+HKLM,%UDHERE%,DisplayName,,"%DisplayName%"
+HKLM,%UDHERE%,DisplayVersion,,"%DisplayVersion%"
+HKLM,%UDHERE%,DisplayIcon,,"%11%\ElevationPowertoys.ico"
+HKLM,%UDHERE%,UninstallString,,"rundll32.exe syssetup.dll,SetupInfObjectInstallAction DefaultUninstall 132 %17%\ExploreAsAdmin.inf"
+
+HKCR,Directory\Shell\ExploreAsAdmin,,,"%ExploreAsAdminAccel%"
+HKCR,Directory\Shell\ExploreAsAdmin\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%ProgramFiles%\Explorer++\Explorer++.exe"" ""%L"""
+HKCR,Drive\Shell\ExploreAsAdmin,,,"%ExploreAsAdminAccel%"
+HKCR,Drive\Shell\ExploreAsAdmin\command,,0x00020000,"""%SystemRoot%\System32\cmd.exe"" /c Elevate.cmd ""%ProgramFiles%\Explorer++\Explorer++.exe"" ""%L"""
+
+[ExploreAsAdmin.DelReg]
+HKLM,%UDHERE%
+HKCR,Directory\Shell\ExploreAsAdmin
+HKCR,Drive\Shell\ExploreAsAdmin
+
+[Strings]
+DisplayName="Explore as Administrator PowerToy for Windows v1.0.0 (Uninstall only)"
+DisplayVersion="1.0.0"
+ExploreAsAdminAccel="Explore as Administrator"
+UDHERE="Software\Microsoft\Windows\CurrentVersion\Uninstall\ExploreAsAdmin"
